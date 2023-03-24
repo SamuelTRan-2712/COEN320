@@ -16,10 +16,8 @@
 #include <stdint.h>
 
 class cTimer {
-	int channel_id;
-	int connection_id;
 
-	struct sigevent sigev;
+	struct sigevent sig_event;
 	struct itimerspec timer_spec;
 	timer_t timer_id;
 
@@ -27,14 +25,16 @@ class cTimer {
 
 	uint64_t cycles_per_sec;
 	uint64_t tick_cycles, tock_cycles;
+
+	int channel_id;
+	int connection_id;
+
 public:
 	cTimer(int offset, int period);
 
-	void setTimerSpec(int, int);
-	void waitTimer();
+	void setTimerSpec(int, int); //adding timer functions from tutorial code
+	void wait_next_activation();
 	int startTimer(int offset, int period);
-	void tick();
-	double tock();
 	virtual ~cTimer();
 };
 

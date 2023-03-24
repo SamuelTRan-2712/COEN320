@@ -9,7 +9,7 @@ int cTimer::startTimer(int offset, int period){
 	timer_spec.it_interval.tv_nsec = 0;
 
 	/* create timer */
-	res = timer_create(CLOCK_MONOTONIC, &sigev, &timer_id);
+	res = timer_create(CLOCK_REALTIME, &sig_event, &timer_id);
 
 	if (res < 0) {
 		perror("Timer Create");
@@ -26,17 +26,11 @@ void cTimer::setTimerSpec(int offset, int period){
 	timer_spec.it_interval.tv_nsec = 0;
 	timer_settime(timer_id, 0, &timer_spec, NULL);
 }
-void cTimer::waitTimer(){
-	int rcvid;
+void cTimer::wait_next_activation(){
+	int rcvid; //waits for the next message to be received before clock interrupt?
 	rcvid = MsgReceive(channel_id, &msg_buffer, sizeof(msg_buffer), NULL);
 }
-void cTimer::tick(){
-	tick_cycles = ClockCycles();
-}
-double cTimer::tock(){
-	tock_cycles = ClockCycles();
-	return (double)((int)(((double)(tock_cycles-tick_cycles)/cycles_per_sec)*100000))/10;
-}
+
 
 cTimer::cTimer(int offset, int period) {
 	channel_id = ChannelCreate(0);
@@ -45,7 +39,7 @@ cTimer::cTimer(int offset, int period) {
 		std::cerr << "Timer, Connect Attach error : " << errno << "\n";
 	}
 
-	SIGEV_PULSE_INIT(&sigev, connection_id, SIGEV_PULSE_PRIO_INHERIT, 1, 0);
+	SIGEV_PULSE_INIT(&sig_event, connection_id, SIGEV_PULSE_PRIO_INHERIT, 1, 0);
 	//debugcout << "TIMER pulse initiated" << endl;
 	//
 

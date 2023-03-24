@@ -25,7 +25,7 @@ int Plane::updateLocation(){
 	// loop until plane exits the monitored airspace
 	while (posX < 100000 && posY < 100000 && posZ < 25000) // remember to put the actual values
 	{
-		timer.waitTimer();
+		timer.wait_next_activation();
 		// add plane id to airspace vector
 		if (find(airspace.begin(), airspace.end(), ID) != airspace.end()){
 			//printf("ID present in airspace %d\n\n", ID);
