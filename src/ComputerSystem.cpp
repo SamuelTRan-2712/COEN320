@@ -98,6 +98,7 @@ int point_2_point_dist(int x1, int y1, int x2, int y2) {
 	return d;
 }
 
+
 void ComputerSystem::calcCollision() {
 	int xyResult = 0;
 	bool xyCollision = false;

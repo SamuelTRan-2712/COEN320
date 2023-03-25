@@ -23,7 +23,7 @@ int Plane::updateLocation(){
 		return EXIT_FAILURE;
 	}
 	// loop until plane exits the monitored airspace
-	while (posX < 100000 && posY < 100000 && posZ < 25000) // remember to put the actual values
+	while (arrivalPosX < 100000 && arrivalPosY < 100000 && arrivalPosZ < 25000) // remember to put the actual values
 	{
 		timer.wait_next_activation();
 		// add plane id to airspace vector
@@ -35,12 +35,12 @@ int Plane::updateLocation(){
 			//printf("ID written to airspace %d\n\n", ID);
 		}
 		// update location
-		this->posX += velX;
-		this->posY += velY;
-		this->posZ += velZ;
+		this->arrivalPosX += arrivalVelX;
+		this->arrivalPosY += arrivalVelY;
+		this->arrivalPosZ += arrivalVelZ;
 
 		// listen for messages from radar and send reply
-		plane_info = {ID, posX, posY, posZ, velX, velY, velZ};
+		plane_info = {ID, arrivalPosX, arrivalPosY, arrivalPosZ, arrivalVelX, arrivalVelY, arrivalVelZ};
 		rcvid = MsgReceive(attach->chid, &msg, sizeof(msg), NULL);
 		if (msg.hdr.type == 0x00){
 			MsgReply(rcvid, EOK, &plane_info, sizeof(plane_info));
@@ -53,36 +53,37 @@ int Plane::updateLocation(){
 	return EXIT_SUCCESS;
 }
 
-Plane::Plane(int time, int ID, int posX, int posY, int posZ, int velX, int velY, int velZ){
-	// set plane arguments and create thread
-	setPlane(time, ID, posX, posY, posZ, velX, velY, velZ);
+Plane::Plane(int ID, int time, int arrivalPosX, int arrivalPosY, int arrivalPosZ, int arrivalVelX, int arrivalVelY, int arrivalVelZ){
+	//creating planes, as well as initializing a thread for each plane
+	setPlane(ID, time, arrivalPosX, arrivalPosY, arrivalPosZ, arrivalVelX, arrivalVelY, arrivalVelZ);
 
 	if(pthread_create(&thread_id,NULL,plane_start_routine,(void *) this)!=EOK){
 		thread_id=NULL;
 	}
 }
 
-void Plane::setPlane(int time, int ID, int posX, int posY, int posZ, int velX, int velY, int velZ){
-	this->time = time;
+
+void Plane::setPlane(int ID, int time, int arrivalPosX, int arrivalPosY, int arrivalPosZ, int arrivalVelX, int arrivalVelY, int arrivalVelZ){
 	this->ID = ID;
-	this->posX = posX;
-	this->posY = posY;
-	this->posZ = posZ;
-	this->velX = velX;
-	this->velY = velY;
-	this->velZ = velZ;
+	this->time = time;
+	this->arrivalPosX = arrivalPosX;
+	this->arrivalPosY = arrivalPosY;
+	this->arrivalPosZ = arrivalPosZ;
+	this->arrivalVelX = arrivalVelX;
+	this->arrivalVelY = arrivalVelY;
+	this->arrivalVelZ = arrivalVelZ;
 }
 
-void Plane::setCoordinates(int posX, int posY, int posZ){
-	this->posX = posX;
-	this->posY = posY;
-	this->posZ = posZ;
+void Plane::setCoordinates(int arrivalPosX, int arrivalPosY, int arrivalPosZ){
+	this->arrivalPosX = arrivalPosX;
+	this->arrivalPosY = arrivalPosY;
+	this->arrivalPosZ = arrivalPosZ;
 }
 
-void Plane::setVelocity(int velX, int velY, int velZ){
-	this->velX = velX;
-	this->velY = velY;
-	this->velZ = velZ;
+void Plane::setVelocity(int arrivalVelX, int arrivaVelY, int arrivalVelZ){
+	this->arrivalVelX = arrivalVelX;
+	this->arrivalVelY = arrivalVelY;
+	this->arrivalVelZ = arrivalVelZ;
 }
 
 void Plane::sendInfo(){
