@@ -14,8 +14,9 @@ using namespace std;
 
 int main (int argc, char* argv[]) {
 
+
 	ifstream infile;
-	infile.open("./input.txt.txt");
+	infile.open("./input.txt");
 
 	if(infile.fail()){
 		cout << "the file could not be opened";
