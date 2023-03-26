@@ -6,25 +6,40 @@
 #include "Display.h"
 #include "ATC.h"
 #include <unistd.h>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
 
 int main (int argc, char* argv[]) {
 
-	if (chdir("/COEN320Project/src/input.txt") != 0) {
-		std::cerr << "Error: Failed to change directory" << std::endl;
-		return 1;
+	ifstream infile;
+	infile.open("./input.txt.txt");
+
+	if(infile.fail()){
+		cout << "the file could not be opened";
 	}
 
-	ATC atc;
-	atc.readInput();
+	else{
+		string s;
+		while(infile>>s){
+			cout<<s<<endl;
+		}
+
+	}
+
+//	ATC atc;
+//	atc.readInput();
 
 	Display display;
 	ComputerSystem compsys;
 	Radar radar;
 
-
-	for(int i=0; i < atc.planes.size(); i++){
-		pthread_join(atc.planes.at(i)->thread_id,NULL);
-	}
+//
+//	for(int i=0; i < atc.planes.size(); i++){
+//		pthread_join(atc.planes.at(i)->thread_id,NULL);
+//	}
 
 
 	return EXIT_SUCCESS;
