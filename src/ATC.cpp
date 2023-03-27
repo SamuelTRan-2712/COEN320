@@ -76,7 +76,7 @@ int ATC::readInput() {
 	}
 
 	while (getline (infile,line)) {
-		if (line.empty()) continue;  // skip empty line
+		// if (line.empty()) continue;  // skip empty line
 		infile >>  ID >> arrivalTime >> arrivalPosX >> arrivalPosY >> arrivalPosZ >> arrivalVelX >> arrivalVelY >> arrivalVelZ;
 		//create plane objects and add pointer to each plane to a vector
 		Plane *plane = new Plane(ID, arrivalTime, arrivalPosX, arrivalPosY, arrivalPosZ, arrivalVelX, arrivalVelY, arrivalVelZ);
