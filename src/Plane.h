@@ -25,7 +25,7 @@ class Plane {
 	int rcvid;
 	void *ptr;
 public:
-	pthread_t thread_id;
+	pthread_t thread_id;//creating a thread for each plane
 	static vector<int> airspace;
 
 	void * threadTask(void * );

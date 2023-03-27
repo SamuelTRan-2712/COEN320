@@ -12,7 +12,8 @@ void* display_start_routine(void* arg) {
 }
 
 Display::Display(){
-	if(pthread_create(&thread_id,NULL,display_start_routine,(void *) this)!=EOK)
+	if(pthread_create(&thread_id,NULL,display_start_routine,(void *) this)!=EOK) //error can be -1, ENOSYS, ERESTART, EOK, or the error code that you want to set for the client.
+
 	{
 		thread_id=NULL;
 	}

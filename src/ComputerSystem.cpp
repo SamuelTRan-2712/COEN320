@@ -74,7 +74,8 @@ int ComputerSystem::fromRadar(){
 
 		/* Some other QNX IO message was received; reject it */
 		if (data.hdr.type > _IO_BASE && data.hdr.type <= _IO_MAX ) {
-			MsgError( rcvid, ENOSYS );
+			MsgError( rcvid, ENOSYS ); // error can be -1, ENOSYS, ERESTART, EOK, or the error code that you want to set for the client.
+
 		    continue;
 		}
 		// check for appropriate header and copy the data to planes
@@ -88,7 +89,7 @@ int ComputerSystem::fromRadar(){
 		toDisplay(data);
 
 	}
-	name_detach(attach, 0);
+	name_detach(attach, 0); //destroying channel with server
 	return EXIT_SUCCESS;
 }
 

@@ -91,7 +91,7 @@ void Plane::sendInfo(){
 }
 
 Plane::~Plane() {
-	pthread_mutex_destroy( &mutex );
+	pthread_mutex_destroy( &mutex ); //destroys instance of plane
 	thread_id = NULL;
 }
 

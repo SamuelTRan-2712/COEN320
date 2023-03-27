@@ -17,25 +17,24 @@
 
 class cTimer {
 
-	struct sigevent sig_event;
-	struct itimerspec timer_spec;
 	timer_t timer_id;
+	struct sigevent sig_event; //creating a struct called sigevent which will be used as a notification system
+	struct itimerspec timer_spec;
 
 	char msg_buffer[100];
 
 	uint64_t cycles_per_sec;
 	uint64_t tick_cycles, tock_cycles;
 
-	int channel_id;
-	int connection_id;
+	int chid;
+	int coid;
 
 public:
 	cTimer(int offset, int period);
-
-	void setTimerSpec(int, int); //adding timer functions from tutorial code
-	void wait_next_activation();
-	int startTimer(int offset, int period);
 	virtual ~cTimer();
+	void set_timer(int, int); //adding timer functions from tutorial code
+	void wait_next_activation();
+	//int startTimer(int offset, int period); believe we can delete this as well
 };
 
 #endif /* CTIMER_H_ */
