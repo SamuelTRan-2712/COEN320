@@ -26,14 +26,43 @@ int ATC::readInput() {
   std::string separator = " ";
 
 
-  //ID >> arrivalTime >> arrivalPosX >> arrivalPosY >> arrivalPosZ >> arrivalVelX >> arrivalVelY >> arrivalVelZ
+//	std::ofstream outfile("planes.txt");
+//
+//	if (!outfile.is_open()) {
+//	    std::cerr << "Unable to create file input.txt\n";
+//	    return -1;
+//	  }
+//
+//
+//	  outfile << " 1 1       0     0 12500  500  500 0\n";
+//	  outfile << "2 1    4000     0 12500  500  500 0\n";
+//	  outfile << "3 1    8000     0 12500  500  500 0\n";
+//	  outfile << "4 1   12000     0 12500  500  500 0\n";
+//	  outfile << "5 1   16000     0 12500  500  500 0\n";
+//
+//	  outfile << "6 11      0  4000 12500  500  500 0\n";
+//	  outfile << "7 11  94000     0 12500  500  500 0\n";
+//	  outfile << "8 11  89000     0 12500  500  500 0\n";
+//	  outfile << "9 11  84000     0 12500  500  500 0\n";
+//	  outfile << "10 11 79000     0 12500  500  500 0\n";
+//
+//	  outfile << "11 21     0 99000 12500  500  500 0\n";
+//	  outfile << "12 21     0 94000 12500  500  500 0\n";
+//	  outfile << "13 21     0 89000 12500  500  500 0\n";
+//	  outfile << "14 21     0 84000 12500  500  500 0\n";
+//	  outfile << "15 21     0 79000 12500  500  500 0\n";
+//
+//	  outfile << "16 31 100000 100000  12500 -500 -500 0\n";
+//	  outfile << "17 31  96000 100000  12500 -500 -500 0\n";
+//	  outfile << "18 31  92000 100000  12500 -500 -500 0\n";
+//	  outfile << "19 31  88000 100000  12500 -500 -500 0\n";
+//	  outfile << "20 31  84000 100000  12500 -500 -500 0\n";
+//	  outfile.close();
+
 
 	ifstream infile;
 	string line;
-
-	std::ofstream outfile("input.txt");
-
-	infile.open("input.txt");
+	infile.open("planes.txt");
 
 	if (!infile) {
 	  cerr << "Unable to open file input.txt\n";
@@ -48,27 +77,22 @@ int ATC::readInput() {
 
 	while (getline (infile,line)) {
 		if (line.empty()) continue;  // skip empty line
-		cout << line << '\n';
-	}
+		infile >>  ID >> arrivalTime >> arrivalPosX >> arrivalPosY >> arrivalPosZ >> arrivalVelX >> arrivalVelY >> arrivalVelZ;
+		//create plane objects and add pointer to each plane to a vector
+		Plane *plane = new Plane(ID, arrivalTime, arrivalPosX, arrivalPosY, arrivalPosZ, arrivalVelX, arrivalVelY, arrivalVelZ);
+		planes.push_back(plane);
+			if (plane == nullptr) {
+					std::cerr << "Failed to create plane object" << std::endl;
+					return -1;
+				}
+		  }
+	std::cout << "Number of planes: " << planes.size() << std::endl;
 	infile.close();
 
-		// create plane objects and add pointer to each plane to a vector
-		//Plane *plane = new Plane(ID, arrivalTime, arrivalPosX, arrivalPosY, arrivalPosZ, arrivalVelX, arrivalVelY, arrivalVelZ);
-		//planes.push_back(plane);
-//		    if (plane == nullptr) {
-//		            std::cerr << "Failed to create plane object" << std::endl;
-//		            return -1;
-//		        }
-//		  }
-//		std::cout << "Number of planes: " << planes.size() << std::endl;
 
-
-
-
-
-		for (const auto& plane : planes) {
-		    std::cout << plane->ID << std::endl;
-		}
+	for (const auto& plane : planes) {
+		std::cout << plane->ID << std::endl;
+	}
 
   return 0;
 }
