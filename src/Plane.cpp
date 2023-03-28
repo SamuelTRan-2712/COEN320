@@ -17,7 +17,7 @@ void* plane_start_routine(void *arg){
 
 // Updates location every second and listens to ping from radar
 int Plane::updateLocation(){
-	cTimer timer(1,0,1, 0); //changing time to 1
+	cTimer timer(1,0,1, 0); //sends data to the radar every 1 second
 	name_attach_t *attach;
 	msg msg;
 	plane_info plane_info;
@@ -29,14 +29,14 @@ int Plane::updateLocation(){
 	}
 
 	// loop until plane exits the monitored airspace
-	while (arrivalPosX < 100000 && arrivalPosY < 100000 && arrivalPosZ < 25000) //when an airplane has entered the airspace, add it to the vector
+	while (arrivalPosX < 100000 && arrivalPosY < 100000 && arrivalPosZ < 25000 //&& arrivalPosZ > 15000
+			) //when an airplane has entered the airspace, add it to the vector
 	{
-//		timer.wait_next_activation();
-		sleep(1);	// to be removed, for testing only
+		timer.wait_next_activation();
+		//sleep(1);	// to be removed, for testing only, need to change to
 
 		// add plane id to airspace vector
-		if (find(airspace.begin(), airspace.end(), ID) != airspace.end()) {}
-		else {
+		if (find(airspace.begin(), airspace.end(), ID) == airspace.end()) {
 			airspace.push_back(ID);
 		}
 
