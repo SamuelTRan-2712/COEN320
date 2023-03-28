@@ -17,7 +17,7 @@ void* plane_start_routine(void *arg){
 
 // Updates location every second and listens to ping from radar
 int Plane::updateLocation(){
-	cTimer timer(time,1);
+	cTimer timer(1,0,1, 0); //changing time to 1
 	name_attach_t *attach;
 	msg msg;
 	plane_info plane_info;

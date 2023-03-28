@@ -28,11 +28,14 @@ class cTimer {
 
 	int chid;
 	int coid;
+	int p_nsec = 0;
+	int o_nsec = 0;
+
 
 public:
-	cTimer(int offset, int period);
+	cTimer(uint32_t,uint32_t,uint32_t,uint32_t);
 	virtual ~cTimer();
-	void set_timer(int, int); //adding timer functions from tutorial code
+	void set_timer(uint32_t,uint32_t,uint32_t,uint32_t); //adding timer functions from tutorial code
 	void wait_next_activation();
 	//int startTimer(int offset, int period); believe we can delete this as well
 };

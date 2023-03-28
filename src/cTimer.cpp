@@ -2,7 +2,7 @@
 
 
 
-cTimer::cTimer(int offset, int period) {
+cTimer::cTimer(uint32_t period_sec, uint32_t period_msec, uint32_t offset_sec,uint32_t offset_msec ) {
 	chid = ChannelCreate(0);
 	coid = ConnectAttach(0,0,chid,0,0);
 	if(coid == -1){
@@ -11,8 +11,11 @@ cTimer::cTimer(int offset, int period) {
 
 	SIGEV_PULSE_INIT(&sig_event, coid, SIGEV_PULSE_PRIO_INHERIT, 1, 0);
 
-	set_timer(5, 0);
+	if (timer_create(CLOCK_REALTIME, &sig_event, &timer_id) == -1){
+			std::cerr << "Timer, Init error : " << errno << "\n";
+		}
 
+	set_timer(period_sec,1000000* period_msec,offset_sec,1000000* offset_msec);
 //	if (set_timer(offset, period) < 0)
 //	{
 //		perror("Start periodic timer");
@@ -34,13 +37,13 @@ cTimer::~cTimer() {
 	//timer_settime(timer_id, 0, &timer_spec, NULL);
 //}
 
-void cTimer::set_timer(int offset, int period){
+void cTimer::set_timer(uint32_t p_sec, uint32_t p_nsec, uint32_t o_sec, uint32_t o_nsec){
 	int res;
 	/* set timer parameters */
-	timer_spec.it_value.tv_sec = offset; //I believe we only need offset and period here, the rest are specified in nano seconds
-	//timer_spec.it_value.tv_nsec = 0; //
-	timer_spec.it_interval.tv_sec = period;
-	//timer_spec.it_interval.tv_nsec = 0;
+	timer_spec.it_value.tv_sec = o_sec; //I believe we only need offset and period here, the rest are specified in nano seconds
+	timer_spec.it_value.tv_nsec = o_nsec; //
+	timer_spec.it_interval.tv_sec = p_sec;
+	timer_spec.it_interval.tv_nsec = p_nsec;
 
 	/* create timer */
 	res = timer_create(CLOCK_REALTIME, &sig_event, &timer_id); //creating a real time timer with its own ID,

@@ -22,7 +22,7 @@ int Radar::toComputerSys(all_planes data){
 
 
 void Radar::pingAirspace(){
-	cTimer timer(1,1);
+	cTimer timer(1,0, 1, 0); //creating a timer of period 1 with an offset of 1. CHANGE IF WE WANT TO CHANGE THE AMOUNT OF TIME BETWEEN PINGS
 
 	msg msg;
 	msg.hdr.type = 0x00;

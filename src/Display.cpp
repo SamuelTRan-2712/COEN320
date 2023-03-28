@@ -80,7 +80,7 @@ int Display::runDisplay() {
 //			}
 		}
 		MsgReply(rcvid, EOK, 0, 0);
-		cTimer timer(5,5);
+		cTimer timer(5,0,5,0);
 		timer.wait_next_activation();
 		for(int i = 0; i <51; i++){
 			for (int j = 0; j < 102; j++){
