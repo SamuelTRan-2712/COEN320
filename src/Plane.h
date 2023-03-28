@@ -33,7 +33,7 @@ public:
 	void setPlane(int ID, int time, int posX, int posY, int posZ, int velX, int velY, int velZ);
 	void setCoordinates(int posX, int posY, int posZ);
 	void setVelocity(int velX, int velY, int velZ);
-	int updateLocation(); // send updated location every second to the radar
+	int updateLocation(); // update location every second
 
 	virtual ~Plane();
 };

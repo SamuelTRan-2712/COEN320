@@ -59,13 +59,7 @@ void cTimer::set_timer(uint32_t p_sec, uint32_t p_nsec, uint32_t o_sec, uint32_t
 
 
 void cTimer::wait_next_activation(){ //need to change arguments, see if we can change message buffer and size of
-
-
-//	int dummy;
-//	/* suspend calling process until a signal is pending */
-//	sigwait(&sig_set, &dummy);
-
-	int rcvid = MsgReceive(chid, &msg_buffer, sizeof(msg_buffer), NULL); //once message has been received, the clock will wake up again
+	 int rcvid = MsgReceive(chid, &msg_buffer, sizeof(msg_buffer), NULL); //once message has been received, the clock will wake up again
 	 //int MsgReceive( int chid, void * msg,    size_t size,  struct _msg_info * info );
 } //receives a message from the client
 

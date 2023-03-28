@@ -20,13 +20,11 @@ class cTimer {
 	timer_t timer_id;
 	struct sigevent sig_event; //creating a struct called sigevent which will be used as a notification system
 	struct itimerspec timer_spec;
-	sigset_t sig_set;
-	struct timespec tv;
 
 	char msg_buffer[100];
 
-//	uint64_t cycles_per_sec;
-//	uint64_t tick_cycles, tock_cycles;
+	uint64_t cycles_per_sec;
+	uint64_t tick_cycles, tock_cycles;
 
 	int chid;
 	int coid;

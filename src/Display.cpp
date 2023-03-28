@@ -1,7 +1,7 @@
 #include "Display.h"
 
 #define DISPLAY_ATTACH_POINT "Display"
-//const uint64_t timeout = 5000000;
+const uint64_t timeout = 5000000;
 
 using namespace std;
 
@@ -80,7 +80,7 @@ int Display::runDisplay() {
 //			}
 		}
 		MsgReply(rcvid, EOK, 0, 0);
-		cTimer timer(5,0,5,0); //creates a display timer which will display every 5 seconds, with an offset of 5 seconds
+		cTimer timer(5,0,5,0);
 		timer.wait_next_activation();
 		for(int i = 0; i <51; i++){
 			for (int j = 0; j < 102; j++){

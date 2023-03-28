@@ -90,9 +90,9 @@ int ATC::readInput() {
 	infile.close();
 
 
-//	for (const auto& plane : planes) {
-//		std::cout << plane->ID << std::endl;
-//	}
+	for (const auto& plane : planes) {
+		std::cout << plane->ID << std::endl;
+	}
 
   return 0;
 }
