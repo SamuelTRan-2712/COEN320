@@ -13,20 +13,17 @@
 #include "Structures.h"
 
 class ComputerSystem {
-	pthread_mutex_t mutex;
-	friend void * start_routine(void* arg); // thread start routine
-	void *ptr;
 	int rcvid;
 	int server_coid;
+
 public:
 	pthread_t thread_id;
-	// remove this vector
 	std::vector<plane_info> planes;
-	void * threadTask(void * );
+
 	ComputerSystem();
 	int fromRadar();
-	void calcCollision();
-	int toDisplay(all_planes);
+	std::vector<violating_pair_ids> getCollision();
+	int toDisplay(compsys_display_msg);
 	virtual ~ComputerSystem();
 };
 
