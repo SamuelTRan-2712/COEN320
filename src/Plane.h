@@ -17,25 +17,23 @@
 #include <algorithm>
 #include "cTimer.h"
 #include "Structures.h"
+#include <unistd.h>	// To be removed, for testing only
 using namespace std;
 
+
 class Plane {
-	pthread_mutex_t mutex;
-	friend void * start_routine(void* arg); // thread start routine
 	int rcvid;
-	void *ptr;
+
 public:
-	pthread_t thread_id;//creating a thread for each plane
+	pthread_t thread_id;	//creating a thread for each plane
 	static vector<int> airspace;
 
-	void * threadTask(void * );
 	Plane(int ID, int time, int posX, int posY, int posZ, int velX, int velY, int velZ);
 	int ID, time, arrivalPosX, arrivalPosY, arrivalPosZ, arrivalVelX, arrivalVelY, arrivalVelZ;
 	void setPlane(int ID, int time, int posX, int posY, int posZ, int velX, int velY, int velZ);
 	void setCoordinates(int posX, int posY, int posZ);
 	void setVelocity(int velX, int velY, int velZ);
 	int updateLocation(); // update location every second
-	void sendInfo(); // sends extra data when requested, server?
 
 	virtual ~Plane();
 };

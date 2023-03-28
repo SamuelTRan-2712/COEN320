@@ -10,6 +10,8 @@
 #include <vector>
 #include "cTimer.h"
 #include "Structures.h"
+#include "Plane.h"
+#include <unistd.h>	// To be removed, for testing only
 
 class Radar {
 	int server_coid;

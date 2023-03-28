@@ -1,5 +1,4 @@
 #include "Radar.h"
-#include "Plane.h"
 using namespace std;
 
 
@@ -10,11 +9,11 @@ using namespace std;
 // ----------------------------------- Class Methods -----------------------------------
 int Radar::toComputerSys(all_planes data){
 	if ((server_coid = name_open(COMPUTER_ATTACH_POINT, 0)) == -1) {
-		printf("Failed connection to server %d\n\n");
+		printf("Radar: Failed connection to server %d\n\n");
 		return EXIT_FAILURE;
 	}
 	if (MsgSend(server_coid, &data, sizeof(data), 0, 0) == -1) {
-		printf("Failed to send message %d\n\n");
+		printf("Radar: Failed to send message %d\n\n");
 		return EXIT_FAILURE;
 	}
 	name_close(server_coid);
@@ -24,33 +23,41 @@ int Radar::toComputerSys(all_planes data){
 
 void Radar::pingAirspace(){
 	cTimer timer(1,1);
-	while (1){
-//		TODO: set timer to ping planes every X seconds
-		//timer.waitTimer();
 
-		msg msg;
-		plane_info rmsg;
-		all_planes data;
-		char buffer[10];
-		msg.hdr.type = 0x00;
-		airspace = Plane::airspace; // get the populated airspace
+	msg msg;
+	msg.hdr.type = 0x00;
+	plane_info rmsg;
+	all_planes data;
+	data.hdr.type = 0x01;
+	char buffer[10];
+
+
+	while (1){
+		// get the populated airspace
+		airspace = Plane::airspace;
+
+
+//		TODO: set timer to ping planes every X seconds using cTimer
+		//timer.waitTimer();
+		sleep(1);	// to be removed, for testing only
+
 
 		if (airspace.empty()){
-			printf("Airspace empty\n\n");
+			printf("Radar: Airspace empty\n\n");
 		}
 		else {
 			for (int i : airspace){
 				// go through the airspace and ping each plane
 				if ((server_coid = name_open(itoa(i,buffer,10), 0)) == -1){
-					printf("Failed connection to server %d\n\n", i);
+					printf("Radar: Failed connection to server %d\n\n", i);
 					break;
 				}
 				if (MsgSend(server_coid, &msg, sizeof(msg), &rmsg, sizeof(rmsg)) == -1){
-					printf("Failed to send message %d\n\n", i);
+					printf("Radar: Failed to send message %d\n\n", i);
 					break;
 				}
 				name_close(server_coid);
-				printf("Data of Plane #%d: Coords(%d, %d, %d)\n\n", rmsg.ID, rmsg.posX, rmsg.posY, rmsg.posZ);
+				printf("Radar: Data of Plane #%d: Coords(%d, %d, %d)\n\n", rmsg.ID, rmsg.posX, rmsg.posY, rmsg.posZ);
 
 				// add plane data to vector destined to computer system
 				allPlaneData.push_back(rmsg);
@@ -58,7 +65,6 @@ void Radar::pingAirspace(){
 
 			// send data of all planes to computer system
 			// reset allPlaneData
-			data.hdr.type = 0x01;
 			data.allPlanes = allPlaneData;
 			toComputerSys(data);
 			allPlaneData.clear();
@@ -77,9 +83,10 @@ void* radar_start_routine(void *arg)
 
 Radar::Radar()
 {
+	this->server_coid = 0;
 	if(pthread_create(&thread_id,NULL,radar_start_routine,(void *) this)!=EOK)
 	{
-		thread_id = 0;
+		printf("Radar: Failed to start.\n\n");
 	}
 }
 

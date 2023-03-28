@@ -1,15 +1,19 @@
 #include "Plane.h"
 using namespace std;
 
+// ----------------------------------- Constants -----------------------------------
 vector<int> Plane::airspace;
 const uint64_t timeout = 8000000;
 
+
+// ----------------------------------- Class Methods  -----------------------------------
 // Plane start routine that calls updateLocation()
 void* plane_start_routine(void *arg){
 	Plane& plane = *(Plane*) arg;
 	plane.updateLocation();
 	return NULL;
 }
+
 
 // Updates location every second and listens to ping from radar
 int Plane::updateLocation(){
@@ -18,22 +22,24 @@ int Plane::updateLocation(){
 	msg msg;
 	plane_info plane_info;
 	char buffer[10];
+
 	if((attach = name_attach(NULL, itoa(ID,buffer,10), 0)) == NULL){
 		printf("Plane failed to create channel\n\n");
 		return EXIT_FAILURE;
 	}
+
 	// loop until plane exits the monitored airspace
 	while (arrivalPosX < 100000 && arrivalPosY < 100000 && arrivalPosZ < 25000) //when an airplane has entered the airspace, add it to the vector
 	{
-		timer.wait_next_activation();
+//		timer.wait_next_activation();
+		sleep(1);	// to be removed, for testing only
+
 		// add plane id to airspace vector
-		if (find(airspace.begin(), airspace.end(), ID) != airspace.end()){
-			//printf("ID present in airspace %d\n\n", ID);
-		}
+		if (find(airspace.begin(), airspace.end(), ID) != airspace.end()) {}
 		else {
 			airspace.push_back(ID);
-			//printf("ID written to airspace %d\n\n", ID);
 		}
+
 		// update location
 		this->arrivalPosX += arrivalVelX;
 		this->arrivalPosY += arrivalVelY;
@@ -46,6 +52,7 @@ int Plane::updateLocation(){
 			MsgReply(rcvid, EOK, &plane_info, sizeof(plane_info));
 		}
 	}
+
 	// remove plane id from the airspace and kill thread
 	airspace.erase(remove(airspace.begin(), airspace.end(), ID), airspace.end());
 	name_detach(attach, 0);
@@ -53,12 +60,13 @@ int Plane::updateLocation(){
 	return EXIT_SUCCESS;
 }
 
+
 Plane::Plane(int ID, int time, int arrivalPosX, int arrivalPosY, int arrivalPosZ, int arrivalVelX, int arrivalVelY, int arrivalVelZ){
 	//creating planes, as well as initializing a thread for each plane
 	setPlane(ID, time, arrivalPosX, arrivalPosY, arrivalPosZ, arrivalVelX, arrivalVelY, arrivalVelZ);
 
 	if(pthread_create(&thread_id,NULL,plane_start_routine,(void *) this)!=EOK){
-		thread_id=NULL;
+		printf("Plane: failed to initialize.");
 	}
 }
 
@@ -74,11 +82,13 @@ void Plane::setPlane(int ID, int time, int arrivalPosX, int arrivalPosY, int arr
 	this->arrivalVelZ = arrivalVelZ;
 }
 
+
 void Plane::setCoordinates(int arrivalPosX, int arrivalPosY, int arrivalPosZ){
 	this->arrivalPosX = arrivalPosX;
 	this->arrivalPosY = arrivalPosY;
 	this->arrivalPosZ = arrivalPosZ;
 }
+
 
 void Plane::setVelocity(int arrivalVelX, int arrivaVelY, int arrivalVelZ){
 	this->arrivalVelX = arrivalVelX;
@@ -86,12 +96,8 @@ void Plane::setVelocity(int arrivalVelX, int arrivaVelY, int arrivalVelZ){
 	this->arrivalVelZ = arrivalVelZ;
 }
 
-void Plane::sendInfo(){
-	// send extra information to radar on operator request
-}
 
-Plane::~Plane() {
-	pthread_mutex_destroy( &mutex ); //destroys instance of plane
-	thread_id = NULL;
+Plane::~Plane()
+{
 }
 
