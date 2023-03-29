@@ -90,40 +90,40 @@ int Display::runDisplay() {
 		timer.wait_next_activation();
 
 		std::cout << "X-Y view" << endl;
-		for(int i = 0; i < 75; i++){
-			for (int j = 0; j < 120; j++){
+		for(int i = 0; i < 20; i++){
+			for (int j = 0; j < 50; j++){
 				bool isprinted = false;
-				if (i == 0) {
-					std::cout << "-";
-				}
-				else if (j == 0) {
-					std::cout << "|";
-				}
-				else if (i == 74) {
-					std::cout << "-";
-				}
-				else if (j == 119) {
-					std::cout << "|";
-				}
+					if (i == 0) {
+						std::cout << "-";
+					}
+					else if (j == 0) {
+						std::cout << "|";
+					}
+					else if (i == 19) {
+						std::cout << "-";
+					}
+					else if (j == 49) {
+						std::cout << "|";
+					}
 
-				if (planes.size() != 0){
-					for(plane_info x: planes){
-						if(i == ((x.posX/2000)+1) && (j == ((x.posY/2000)+1))) {
-							std::cout << x.ID;
-							isprinted = true;
+					if (planes.size() != 0){
+						for(plane_info x: planes){
+							if((19-i) == ((x.posX/2000)+1) && ((49-j) == ((x.posY/1000)+1))) {
+								std::cout << x.ID;
+								isprinted = true;
+							}
 						}
 					}
+					if (!isprinted && i != 0 && j != 0 && i != 19 && j != 49) {
+						std::cout << " ";
+					}
 				}
-				if (!isprinted && i != 0 && j != 0 && i != 74 && j != 119) {
-					std::cout << " ";
-				}
-			}
-			std::cout << "\n";
+				std::cout << "\n";
 		}
 
 		std::cout << "X-Z view" << endl;
-				for(int i = 0; i < 75; i++){
-					for (int j = 0; j < 120; j++){
+				for(int i = 0; i < 20; i++){
+					for (int j = 0; j < 50; j++){
 						bool isprinted = false;
 						if (i == 0) {
 							std::cout << "-";
@@ -131,22 +131,22 @@ int Display::runDisplay() {
 						else if (j == 0) {
 							std::cout << "|";
 						}
-						else if (i == 74) {
+						else if (i == 19) {
 							std::cout << "-";
 						}
-						else if (j == 119) {
+						else if (j == 49) {
 							std::cout << "|";
 						}
 
 						if (planes.size() != 0){
 							for(plane_info x: planes){
-								if(i == ((x.posX/2000)+1) && (j == ((x.posZ/2000)+1))) {
+								if((19-i) == ((x.posX/2000)+1) && ((49-j) == ((x.posZ/1000)+1))) {
 									std::cout << x.ID;
 									isprinted = true;
 								}
 							}
 						}
-						if (!isprinted && i != 0 && j != 0 && i != 74 && j != 119) {
+						if (!isprinted && i != 0 && j != 0 && i != 19 && j != 49) {
 							std::cout << " ";
 						}
 					}
