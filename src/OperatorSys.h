@@ -26,12 +26,20 @@
 #include "cTimer.h"
 #include "Structures.h"
 #include <unistd.h>	// To be removed, for testing only
+#include "Plane.h"
+
 
 class OperatorSys {
+	int server_coid;
+	std::vector<int> airspace;
+	std::vector<plane_info>allPlaneData;
+
 public:
+	pthread_t thread_id;
 	OperatorSys();
-	int toComputerSys();
+	int toComputerSys(all_planes);
 	virtual ~OperatorSys();
+	void getCommands();
 };
 
 #endif /* SRC_OPERATORSYS_H_ */

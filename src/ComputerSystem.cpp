@@ -108,6 +108,8 @@ int ComputerSystem::fromRadar() { //computer system is the server. needs to crea
 int ComputerSystem::fromOperatorSys() { //computer system is the server
 	name_attach_t *attach;
 	compsys_display_msg msg;
+	new_planes new_data; //want this to be able to manipulate the struct of planes data we have
+
 
 
 	if((attach = name_attach(NULL, COMPUTER_ATTACH_POINT, 0)) == NULL) {
@@ -116,20 +118,20 @@ int ComputerSystem::fromOperatorSys() { //computer system is the server
 	}
 
 	while (1) {
-		rcvid = MsgReceive(attach->chid, &data, sizeof(data), NULL); // receive messages from operator system
+		rcvid = MsgReceive(attach->chid, &new_data, sizeof(new_data), NULL); // receive messages from operator system
 		if (rcvid == -1) {/* Error condition, exit */
-			break;
+			break; //changing data to new data to try and see if it works with a new struct
 		}
 
 		if (rcvid == 0) {/* Pulse received */
-		    switch (data.hdr.code) {
+		    switch (new_data.hdr.code) {
 		    	case _PULSE_CODE_DISCONNECT:
 		    		/*
 		    		 * A client disconnected all its connections (called
 		    		 * name_close() for each name_open() of our name) or
 		    		 * terminated
 		    		 */
-		    		ConnectDetach(data.hdr.scoid);
+		    		ConnectDetach(new_data.hdr.scoid);
 		    		break;
 		    	case _PULSE_CODE_UNBLOCK:
 		             /*
@@ -150,20 +152,20 @@ int ComputerSystem::fromOperatorSys() { //computer system is the server
 		}
 
 		/* name_open() sends a connect message, must EOK this */
-		if (data.hdr.type == _IO_CONNECT ) {
+		if (new_data.hdr.type == _IO_CONNECT ) {
 			MsgReply( rcvid, EOK, NULL, 0 );
 		    continue;
 		}
 
 		/* Some other QNX IO message was received; reject it */
-		if (data.hdr.type > _IO_BASE && data.hdr.type <= _IO_MAX ) {
+		if (new_data.hdr.type > _IO_BASE && new_data.hdr.type <= _IO_MAX ) {
 			MsgError( rcvid, ENOSYS ); // error can be -1, ENOSYS, ERESTART, EOK, or the error code that you want to set for the client.
 
 		    continue;
 		}
 
 		// check for appropriate header and copy the data to planes
-		if (data.hdr.type == 0x02) { //need to change this to show recieval of messages
+		if (new_data.hdr.type == 0x02) { //need to change this to show recieval of messages
 
 			cout << "message from operator system has been received";
 

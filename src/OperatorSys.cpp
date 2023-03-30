@@ -14,18 +14,9 @@
 
 // ----------------------------------- Class Methods -----------------------------------
 
-OperatorSys::OperatorSys() {
-		this->server_coid = 0;
-		if(pthread_create(&thread_id,NULL,radar_start_routine,(void *) this)!=EOK)
-		{
-			printf("Radar: Failed to start.\n\n");
-		}
-
-}
-
 
 int OperatorSys::toComputerSys(all_planes data) {
-	if ((server_coid = name_open(COMPUTER_ATTACH_POINT, 0)) == -1) {
+	if ((server_coid = name_open(COMPUTER_ATTACH_POINT, 0)) == -1) { //connects to the computer attach point
 			printf("Radar: Failed connection to server %d\n\n");
 			return EXIT_FAILURE;
 		}
@@ -38,7 +29,7 @@ int OperatorSys::toComputerSys(all_planes data) {
 	}
 
 
-void Radar::pingAirspace(){
+void OperatorSys::getCommands(){
 	cTimer timer(1,0, 1, 0); //creating a timer of period 1 with an offset of 1. CHANGE IF WE WANT TO CHANGE THE AMOUNT OF TIME BETWEEN PINGS
 
 	msg msg;
@@ -50,7 +41,7 @@ void Radar::pingAirspace(){
 
 
 	while (1){
-		// get the populated airspace
+		// get the populated airspace in order to manipulate the planes in the airspace
 		airspace = Plane::airspace;
 
 
@@ -90,13 +81,20 @@ void Radar::pingAirspace(){
 }
 
 
-void* radar_start_routine(void *arg)
+void* operator_system_start_routine(void *arg)
 {
-	Radar& radar = *(Radar*) arg;
-	radar.pingAirspace();
+	OperatorSys& operatorSys = *(OperatorSys*) arg;
+	operatorSys.getCommands();
 	return NULL;
 }
 
+OperatorSys::OperatorSys() {
+		this->server_coid = 0;
+		if(pthread_create(&thread_id,NULL,operator_system_start_routine,(void *) this)!=EOK)
+		{
+			printf("Operator System: Failed to start.\n\n");
+		}
+}
 
 
 
