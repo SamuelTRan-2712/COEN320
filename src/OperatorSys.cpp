@@ -45,85 +45,36 @@ void OperatorSys::getCommands(){
 
 				// radar req, formulate a response and send
 				case command == "speed up": //likely only going to change the velocity in the x direction
-					if (msg.hdr.subtype == MsgSubtype::REQ) {
-						// turn request msg into response msg with plane info and reply
-						msg.hdr.subtype = MsgSubtype::REPLY;
-						msg.info = plane.info; // send this plane info
-						MsgReply(rcvid, EOK, &msg, sizeof(msg));
+					for (const auto& plane : planes) {
+						if (ID == plane->ID){
+							plane.XVel == amount;
+						}
+						else{
+							cout << "plane ID not found, please try again";
+						}
 					}
-					break;
-
-				// respond to request for plane info from operator
-				// DATA PATH: CONSOLE -> CPU -> COMMS -> PLANE,
-				// then PLANE -> COMMS -> CPU -> DISPLAY
-				case MsgType::INFO:
-					MsgReply(rcvid, EOK, 0, 0);
-					// make reply
-					msg.hdr.subtype = MsgSubtype::REPLY;
-					msg.info = plane.info;
-					// open channel to comms
-					int coid;
-					if ((coid = name_open(COMMS_CHANNEL, 0)) == -1) {
-						cout << "ERROR: CREATING CLIENT TO COMMS" << endl;
-						break;
-					}
-					// send info
-					MsgSend(coid, &msg, sizeof(msg), 0, 0);
-					// close channel
-					name_close(coid);
-					break;
+				break;
 
 				// responde to different types of commands
 				case command == "change flight level": //only going to be changing the flight level in the Y direction
-					MsgReply(rcvid, EOK, 0, 0); // send the eok because it was blocked
-					// message type command send by the the radar to make the plane change speed
-					if (msg.hdr.subtype == MsgSubtype::CHANGE_SPEED) {
-						double percent = (msg.doubleValue - plane.v) / plane.v;
-						plane.info.dx *= (1 + percent);
-						plane.info.dy *= (1 + percent);
-						plane.v = msg.doubleValue;
+					for (const auto& plane : planes) {
+						if (ID == plane->ID){
+							plane.YVel == amount;
+						}
+						else{
+							cout << "plane ID not found, please try again";
+						}
 					}
-					// message type command send by the the radar to make the plane change altitude
-					else if (msg.hdr.subtype == MsgSubtype::CHANGE_ALTITUDE) {
-						plane.changeAltFlag = true;
-						plane.finalAlt = msg.info.z;
-						plane.info.dz = msg.info.z > plane.info.z ? +50 : -50;
-					}
-					// message type command send by the the radar to make the plane position
-					else if (msg.hdr.subtype == MsgSubtype::CHANGE_POSITION) {
-						// using trig to determine resultant directions using vector
-						const double &dx = plane.info.dx, &dy = plane.info.dy;
-						double angle = atan(dy / dx);
-						if (dx < 0) angle += PI;
-						angle += msg.doubleValue * PI / 180;
-						plane.info.dx = plane.v * cos(angle);
-						plane.info.dy = plane.v * sin(angle);
-					}
+				break;
 
 				case command == "change flight position": //going to change the position in the Z axis
-					MsgReply(rcvid, EOK, 0, 0); // send the eok because it was blocked
-					// message type command send by the the radar to make the plane change speed
-					if (msg.hdr.subtype == MsgSubtype::CHANGE_SPEED) {
-						double percent = (msg.doubleValue - plane.v) / plane.v;
-						plane.info.dx *= (1 + percent);
-						plane.info.dy *= (1 + percent);
-						plane.v = msg.doubleValue;
-					}
-					// message type command send by the the radar to make the plane change altitude
-					else if (msg.hdr.subtype == MsgSubtype::CHANGE_ALTITUDE) {
-						plane.changeAltFlag = true;
-						plane.finalAlt = msg.info.z;
-						plane.info.dz = msg.info.z > plane.info.z ? +50 : -50;
-					}
-					// message type command send by the the radar to make the plane position
-					else if (msg.hdr.subtype == MsgSubtype::CHANGE_POSITION) {
-						// using trig to determine resultant directions using vector
-						const double &dx = plane.info.dx, &dy = plane.info.dy;
-						double angle = atan(dy / dx);
-						if (dx < 0) angle += PI;
-						angle += msg.doubleValue * PI / 180;
-						plane.info.dx = plane.v * cos(angle);
-						plane.info.dy = plane.v * sin(angle);
+					for (const auto& plane : planes) {
+						if (ID == plane->ID){
+							plane.YVel == amount;
+						}
+						else{
+							cout << "plane ID not found, please try again";
+						}
 					}
 					break;
 
