@@ -32,4 +32,10 @@ typedef struct {
 } compsys_display_msg;
 
 
+typedef struct {
+	msg_header_t hdr;
+	int ID, arrivalVelX, arrivalVelY, arrivalVelZ;
+} comm_command;
+
+
 #endif /* STRUCTURES_H_ */
