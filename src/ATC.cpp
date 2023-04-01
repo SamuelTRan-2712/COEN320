@@ -26,20 +26,20 @@ int ATC::readInput() {
   std::string separator = " ";
 
 
-//	std::ofstream outfile("planes.txt");
-//
-//	if (!outfile.is_open()) {
-//	    std::cerr << "Unable to create file input.txt\n";
-//	    return -1;
-//	  }
-//
-//
-//	  outfile << " 1 1       0     0 12500  500  500 0\n";
-//	  outfile << "2 1    4000     0 12500  500  500 0\n";
-//	  outfile << "3 1    8000     0 12500  500  500 0\n";
-//	  outfile << "4 1   12000     0 12500  500  500 0\n";
-//	  outfile << "5 1   16000     0 12500  500  500 0\n";
-//
+	std::ofstream outfile("planes.txt");
+
+	if (!outfile.is_open()) {
+	    std::cerr << "Unable to create file input.txt\n";
+	    return -1;
+	  }
+
+
+	  outfile << "1 1       0     0 12500  500  500 0\n";
+	  outfile << "2 1    4000     0 12500  500  500 0\n";
+	  outfile << "3 1    8000     0 12500  500  500 1000\n";
+	  outfile << "4 1   12000     0 12500  500  500 0\n";
+	  outfile << "5 1   16000     0 12500  500  500 0\n";
+
 //	  outfile << "6 11      0  4000 12500  500  500 0\n";
 //	  outfile << "7 11  94000     0 12500  500  500 0\n";
 //	  outfile << "8 11  89000     0 12500  500  500 0\n";
@@ -57,7 +57,7 @@ int ATC::readInput() {
 //	  outfile << "18 31  92000 100000  12500 -500 -500 0\n";
 //	  outfile << "19 31  88000 100000  12500 -500 -500 0\n";
 //	  outfile << "20 31  84000 100000  12500 -500 -500 0\n";
-//	  outfile.close();
+	  outfile.close();
 
 
 	ifstream infile;
@@ -91,7 +91,7 @@ int ATC::readInput() {
 
 
 	for (const auto& plane : planes) {
-		std::cout << plane->ID << std::endl;
+		std::cout << "Plane ID: " << plane->ID << std::endl;
 	}
 
   return 0;

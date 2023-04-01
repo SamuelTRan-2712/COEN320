@@ -80,7 +80,7 @@ int Display::runDisplay() {
 		// check for appropriate header and copy the data to planes
 		if (data.hdr.type == 0x01){
 			planes = data.allPlanes;
-			printf("Dataaaaaa %d\n\n", data.allPlanes.size());
+			//printf("Dataaaaaa %d\n\n", data.allPlanes.size());
 //			for(plane_info i: planes){
 //				printf("plane id#%d; coords(%d,%d,%d)\n\n", i.ID, i.posX, i.posY, i.posZ);
 //			}
@@ -108,7 +108,7 @@ int Display::runDisplay() {
 
 					if (planes.size() != 0){
 						for(plane_info x: planes){
-							if((19-i) == ((x.posX/2000)+1) && ((49-j) == ((x.posY/1000)+1))) {
+							if((19-i) == ((x.arrivalPosX/2000)+1) && ((j) == ((x.arrivalPosY/1000)+1))) {
 								std::cout << x.ID;
 								isprinted = true;
 							}
@@ -140,7 +140,7 @@ int Display::runDisplay() {
 
 						if (planes.size() != 0){
 							for(plane_info x: planes){
-								if((19-i) == ((x.posX/2000)+1) && ((49-j) == ((x.posZ/1000)+1))) {
+								if((19-i) == ((x.arrivalPosX/2000)+1) && ((j) == ((x.arrivalPosZ/1000)+1))) {
 									std::cout << x.ID;
 									isprinted = true;
 								}
@@ -155,9 +155,13 @@ int Display::runDisplay() {
 		for(plane_info y: planes) {
 			std::cout << "P" << y.ID << ": " << "\n";
 			//std::cout << "ID: " << ID.at(s) << "\n";
-			std::cout << "Position X: " << y.posX << "\n";
-			std::cout << "Position Y: " << y.posY << "\n";
-			std::cout << "Position Z: " << y.posY << "\n" << "\n";
+			std::cout << "Position X: " << y.arrivalPosX << "\n";
+			std::cout << "Position Y: " << y.arrivalPosY << "\n";
+			std::cout << "Position Z: " << y.arrivalPosZ << "\n" << "\n";
+			if (y.arrivalPosZ > 25000 || y.arrivalPosY > 100000 || y.arrivalPosX > 100000){
+				//std::cout << y.ID << " arrivalPosZ "<< y.arrivalPosZ << " arrivalPosX "<< y.arrivalPosX << " arrivalPosY "<< y.arrivalPosY << endl;
+				std::cout << "Plane "<< y.ID << " has exited the monitor" << endl << endl;
+			}
 		}
 	}
 	name_detach(attach, 0);

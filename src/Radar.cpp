@@ -57,7 +57,7 @@ void Radar::pingAirspace(){
 					break;
 				}
 				name_close(server_coid);
-				printf("Radar: Data of Plane #%d: Coords(%d, %d, %d)\n\n", rmsg.ID, rmsg.posX, rmsg.posY, rmsg.posZ);
+				//printf("Radar: Data of Plane #%d: Coords(%d, %d, %d)\n\n", rmsg.ID, rmsg.posX, rmsg.posY, rmsg.posZ);
 
 				// add plane data to vector destined to computer system
 				allPlaneData.push_back(rmsg);

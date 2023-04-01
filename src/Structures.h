@@ -10,7 +10,7 @@ typedef struct _my_msg {
 
 
 typedef struct _plane_info {
-	int ID, posX, posY, posZ, velX, velY, velZ;
+	int ID, arrivalPosX, arrivalPosY, arrivalPosZ, arrivalVelX, arrivalVelY, arrivalVelZ;
 } plane_info;
 
 
