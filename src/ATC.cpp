@@ -62,7 +62,7 @@ int ATC::readInput() {
 
 	ifstream infile;
 	string line;
-	infile.open("planes.txt");
+	infile.open("planerss.txt");
 
 	if (!infile) {
 	  cerr << "Unable to open file input.txt\n";

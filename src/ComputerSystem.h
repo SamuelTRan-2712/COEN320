@@ -22,6 +22,7 @@ public:
 
 	ComputerSystem();
 	int fromRadar();
+	int fromOperatorSys();
 	std::vector<violating_pair_ids> getCollision();
 	int toDisplay(compsys_display_msg);
 	virtual ~ComputerSystem();

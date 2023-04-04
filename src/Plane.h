@@ -34,6 +34,9 @@ public:
 	void setCoordinates(int arrivalPosX, int arrivalPosY, int arrivalPosZ);
 	void setVelocity(int arrivalVelX, int arrivalVelY, int arrivalVelZ);
 	int updateLocation(); // update location every second
+	int getID() const {
+	        return ID;
+	    }
 
 	virtual ~Plane();
 };

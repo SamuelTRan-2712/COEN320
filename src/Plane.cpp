@@ -19,12 +19,12 @@ void* plane_start_routine(void *arg){
 int Plane::updateLocation(){
 	cTimer timer(1,0,1, 0); //changing time to 1
 	name_attach_t *attach;
-	msg msg;
+	msg msg; //message which is being sent to the server
 	plane_info plane_info;
 	char buffer[10];
 
-	if((attach = name_attach(NULL, itoa(ID,buffer,10), 0)) == NULL){
-		printf("Plane failed to create channel\n\n");
+	if((attach = name_attach(NULL, itoa(ID,buffer,10), 0)) == NULL){ //thread that wishes to receive messages creates a channel, thread that wishes to send messages connects to a channel
+		printf("Plane failed to attach to channel\n\n");
 		return EXIT_FAILURE;
 	}
 
@@ -46,10 +46,16 @@ int Plane::updateLocation(){
 		this->arrivalPosZ += arrivalVelZ;
 
 		// listen for messages from radar and send reply
-		plane_info = {ID, arrivalPosX, arrivalPosY, arrivalPosZ, arrivalVelX, arrivalVelY, arrivalVelZ};
+		plane_info = {ID, arrivalPosX, arrivalPosY, arrivalPosZ, arrivalVelX, arrivalVelY, arrivalVelZ}; //message info being sent to the client
 		rcvid = MsgReceive(attach->chid, &msg, sizeof(msg), NULL);
+
+		if (rcvid == -1) {/* Error condition, exit */
+					break;
+		}
+
+
 		if (msg.hdr.type == 0x00){
-			MsgReply(rcvid, EOK, &plane_info, sizeof(plane_info));
+			MsgReply(rcvid, EOK, &plane_info, sizeof(plane_info)); //sends a reply to the radar
 		}
 	}
 
@@ -68,6 +74,7 @@ Plane::Plane(int ID, int time, int arrivalPosX, int arrivalPosY, int arrivalPosZ
 	if(pthread_create(&thread_id,NULL,plane_start_routine,(void *) this)!=EOK){
 		printf("Plane: failed to initialize.");
 	}
+
 }
 
 
