@@ -5,6 +5,7 @@
 #include "ComputerSystem.h"
 #include "Display.h"
 #include "ATC.h"
+#include "OperatorSys.h"
 #include <unistd.h>
 #include <fstream>
 #include <string>
@@ -21,6 +22,8 @@ int main (int argc, char* argv[]) {
 	Display display;
 	ComputerSystem compsys;
 	Radar radar;
+
+	OperatorSys operatorsys;
 
 
 	for(int i=0; i < atc.planes.size(); i++){

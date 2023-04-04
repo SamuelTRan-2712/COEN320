@@ -38,6 +38,8 @@ int OperatorSys::toComputerSys(all_planes data) {
 
 
 void OperatorSys::getCommands(){
+
+
 	cTimer timer(5,0, 5, 0); //creating a polling server which will call this function every 5 seconds, asking if we want to change airplane commands
 
 	msg msg;
@@ -47,47 +49,53 @@ void OperatorSys::getCommands(){
 	data.hdr.type = 0x01;
 	char buffer[10];
 
-	string command;
-	int ID;
-	int amount;
+	string commands[5] = {"speed up", "change flight level", "change flight position", "speed up", "change flight level"};
+	int amounts[5] = {100, 200, 300, 400, 500};
+	int IDs[5] = {1, 2, 3, 4, 5};
 
 	std::vector<Plane*> planes;
 
 
-//	this->arrivalPosX = arrivalPosX;
-//	this->arrivalPosY = arrivalPosY;
-//	this->arrivalPosZ = arrivalPosZ;
-//	this->arrivalVelX = arrivalVelX;
-//	this->arrivalVelY = arrivalVelY;
-//	this->arrivalVelZ = arrivalVelZ;
-
 	while (1){
+			timer.wait_next_activation();
 			// get the populated airspace in order to manipulate the planes in the airspace
 			airspace = Plane::airspace;
 
+			if (airspace.empty()){
+						printf("Airspace empty, no airplanes to change");
+					}
+					else {
 
-			cout << "Send a command to a certain plane followed by its ID:  ";
-			cin >> command >> amount >> ID;
-
-			switch (hashit(command)) {
+		for (int i = 0; i < 5; i++) {
+			switch (hashit(commands[i])) {
 
 					// radar req, formulate a response and send
 					case speedUpX: //likely only going to change the velocity in the x direction
+
+						cout << "hellooooooo";
+
 						for (const auto& plane : planes) {
-							if (ID == plane->ID){
-								plane->arrivalVelX = amount;
+							if (IDs[i] == plane->ID){
+
+					            cout << "old velocity of plane 1: " << planes[i]->arrivalVelX;
+
+								plane->arrivalVelX = amounts[i];
+
+					            cout << "new velocity of plane 1: " << planes[i]->arrivalVelX;
+
 							}
 							else{
 								cout << "plane ID not found, please try again";
 							}
 						}
+
 					break;
 
-					// responde to different types of commands
+					// respond to different types of commands
 					case speedUpY: //only going to be changing the flight level in the Y direction
 						for (const auto& plane : planes) {
-							if (ID == plane->ID){
-								plane->arrivalVelY = amount;
+							if (IDs[i] == plane->ID){
+								plane->arrivalVelY = amounts[i];
 							}
 							else{
 								cout << "plane ID not found, please try again";
@@ -97,8 +105,8 @@ void OperatorSys::getCommands(){
 
 					case speedUpZ: //going to change the position in the Z axis
 						for (const auto& plane : planes) {
-							if (ID == plane->ID){
-								plane->arrivalVelZ = amount;
+							if (IDs[i] == plane->ID){
+								plane->arrivalVelZ = amounts[i];
 							}
 							else{
 								cout << "plane ID not found, please try again";
@@ -110,14 +118,11 @@ void OperatorSys::getCommands(){
 					break;
 				}
 		}
+					}
+
+			//need the operator system to be treated as a client, plane to be the server
 
 
-		//timer.waitTimer();
-
-		if (airspace.empty()){
-			printf("Airspace empty, no airplanes to change");
-		}
-		else {
 			for (int i : airspace){
 
 
@@ -131,7 +136,7 @@ void OperatorSys::getCommands(){
 					break;
 				}
 				name_close(server_coid);
-				printf("Radar: Data of Plane #%d: Coords(%d, %d, %d)\n\n", rmsg.ID, rmsg.posX, rmsg.posY, rmsg.posZ);
+				// printf("Radar: Data of Plane #%d: Coords(%d, %d, %d)\n\n", rmsg.ID, rmsg.posX, rmsg.posY, rmsg.posZ);
 
 				// add plane data to vector destined to computer system
 				allPlaneData.push_back(rmsg);
@@ -153,6 +158,7 @@ void* operator_system_start_routine(void *arg)
 	operatorSys.getCommands();
 	return NULL;
 }
+
 
 OperatorSys::OperatorSys() {
 		this->server_coid = 0;

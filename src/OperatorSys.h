@@ -35,6 +35,7 @@ class OperatorSys {
 	std::vector<int> airspace;
 	std::vector<plane_info>allPlaneData;
 
+
 public:
 	pthread_t thread_id;
 	OperatorSys();
