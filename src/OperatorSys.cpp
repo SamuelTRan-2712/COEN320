@@ -6,6 +6,18 @@
 
 // ----------------------------------- Class Methods -----------------------------------
 
+static enum StringValue { evNotDefined,
+                          evStringValue1,
+                          evStringValue2,
+                          evStringValue3,
+                          evEnd };
+
+static std::map<std::string, StringValue> s_mapStringValues;
+
+static char szInput[_MAX_PATH];
+
+static void Initialize();
+
 
 int OperatorSys::toComputerSys(all_planes data) {
 	if ((server_coid = name_open(COMPUTER_ATTACH_POINT, 0)) == -1) { //connects to the computer attach point
@@ -33,18 +45,24 @@ void OperatorSys::getCommands(){
 
 	string command;
 	string ID;
+	string direction;
+	int amount;
 
 	while (1){
 		// get the populated airspace in order to manipulate the planes in the airspace
 		airspace = Plane::airspace;
 
+		cout << "Please enter a string (end to terminate): ";
+		    cout.flush();
+		    cin.getline(szInput, _MAX_PATH);
+
 		cout << "Send a command to a certain plane followed by its ID:  ";
 		cin >> command >> direction >> amount >> ID;
 
-		switch (command) {
+		switch (s_mapStringValues[szInput]) {
 
 				// radar req, formulate a response and send
-				case command == "speed up": //likely only going to change the velocity in the x direction
+				case evStringValue1 == "speed up": //likely only going to change the velocity in the x direction
 					for (const auto& plane : planes) {
 						if (ID == plane->ID){
 							plane.XVel == amount;
@@ -56,7 +74,7 @@ void OperatorSys::getCommands(){
 				break;
 
 				// responde to different types of commands
-				case command == "change flight level": //only going to be changing the flight level in the Y direction
+				case evStringValue2 == "change flight level": //only going to be changing the flight level in the Y direction
 					for (const auto& plane : planes) {
 						if (ID == plane->ID){
 							plane.YVel == amount;
@@ -67,7 +85,7 @@ void OperatorSys::getCommands(){
 					}
 				break;
 
-				case command == "change flight position": //going to change the position in the Z axis
+				case evStringValue3 == "change flight position": //going to change the position in the Z axis
 					for (const auto& plane : planes) {
 						if (ID == plane->ID){
 							plane.YVel == amount;
@@ -130,7 +148,17 @@ OperatorSys::OperatorSys() {
 		}
 }
 
+void Initialize()
+{
+  s_mapStringValues["First Value"] = evStringValue1;
+  s_mapStringValues["Second Value"] = evStringValue2;
+  s_mapStringValues["Third Value"] = evStringValue3;
+  s_mapStringValues["end"] = evEnd;
 
+  cout << "s_mapStringValues contains "
+       << s_mapStringValues.size()
+       << " entries." << endl;
+}
 
 OperatorSys::~OperatorSys() {
 	// TODO Auto-generated destructor stub
