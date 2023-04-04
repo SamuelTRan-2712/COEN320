@@ -28,11 +28,11 @@ public:
 	pthread_t thread_id;	//creating a thread for each plane
 	static vector<int> airspace;
 
-	Plane(int ID, int time, int posX, int posY, int posZ, int velX, int velY, int velZ);
+	Plane(int ID, int time, int arrivalPosX, int arrivalPosY, int arrivalPosZ, int arrivalVelX, int arrivalVelY, int arrivalVelZ);
 	int ID, time, arrivalPosX, arrivalPosY, arrivalPosZ, arrivalVelX, arrivalVelY, arrivalVelZ;
-	void setPlane(int ID, int time, int posX, int posY, int posZ, int velX, int velY, int velZ);
-	void setCoordinates(int posX, int posY, int posZ);
-	void setVelocity(int velX, int velY, int velZ);
+	void setPlane(int ID, int time, int arrivalPosX, int arrivalPosY, int arrivalPosZ, int arrivalVelX, int arrivalVelY, int arrivalVelZ);
+	void setCoordinates(int arrivalPosX, int arrivalPosY, int arrivalPosZ);
+	void setVelocity(int arrivalVelX, int arrivalVelY, int arrivalVelZ);
 	int updateLocation(); // update location every second
 	int getID() const {
 	        return ID;

@@ -13,9 +13,9 @@ std::vector<violating_pair_ids> ComputerSystem::getCollision() {
 
 	for (unsigned i = 0; i < planes.size(); i ++) {
 		for (unsigned j = i + 1; j < planes.size(); j++) {
-			if (abs(planes.at(i).posX - planes.at(j).posX) < 3000 ||
-				abs(planes.at(i).posY - planes.at(j).posY) < 3000 ||
-				abs(planes.at(i).posZ - planes.at(j).posZ) < 1000)
+			if (abs(planes.at(i).arrivalPosX - planes.at(j).arrivalPosX) < 3000 ||
+				abs(planes.at(i).arrivalPosY - planes.at(j).arrivalPosY) < 3000 ||
+				abs(planes.at(i).arrivalPosZ - planes.at(j).arrivalPosZ) < 1000)
 			{
 					violating_pair_ids violating_pair_ids;
 					violating_pair_ids.plane_ID_1 = planes.at(i).ID;
@@ -96,6 +96,8 @@ int ComputerSystem::fromRadar() { //computer system is the server. needs to crea
 			// Construct data to send to display
 			msg.planes = data;
 			msg.colliding_planes = getCollision();
+//			printf("Hdrrrrrr %d\n\n", msg.planes.hdr.type);
+
 			toDisplay(msg);
 
 		}
@@ -189,6 +191,7 @@ int ComputerSystem::toDisplay(compsys_display_msg msg){
 	}
 
 	if (MsgSend(server_coid, &msg, sizeof(msg), 0, 0) == -1) { //sending message to the server
+
 		printf("Failed to send message %d\n\n");
 		return EXIT_FAILURE;
 	}

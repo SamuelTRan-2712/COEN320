@@ -10,7 +10,7 @@ typedef struct _my_msg {
 
 
 typedef struct _plane_info {
-	int ID, posX, posY, posZ, velX, velY, velZ;
+	int ID, arrivalPosX, arrivalPosY, arrivalPosZ, arrivalVelX, arrivalVelY, arrivalVelZ;
 } plane_info;
 
 
@@ -35,6 +35,12 @@ typedef struct {
 	all_planes planes;
 	std::vector<violating_pair_ids> colliding_planes;
 } compsys_display_msg;
+
+
+typedef struct {
+	msg_header_t hdr;
+	int ID, arrivalVelX, arrivalVelY, arrivalVelZ;
+} comm_command;
 
 
 #endif /* STRUCTURES_H_ */
