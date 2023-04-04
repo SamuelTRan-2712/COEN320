@@ -6,17 +6,21 @@
 
 // ----------------------------------- Class Methods -----------------------------------
 
-static enum StringValue { evNotDefined,
-                          evStringValue1,
-                          evStringValue2,
-                          evStringValue3,
-                          evEnd };
+ //flight level, speed, and position of aircraft #1
 
-static std::map<std::string, StringValue> s_mapStringValues;
+enum string_code {
+    speedUpX,
+    speedUpY,
+    speedUpZ,
+	unknownCode
+};
 
-static char szInput[_MAX_PATH];
-
-static void Initialize();
+string_code hashit (std::string const& inString) {
+    if (inString == "speed up") return speedUpY;
+    if (inString == "change flight level") return speedUpZ;
+    if (inString == "change flight position") return speedUpX;
+    else return unknownCode;
+}
 
 
 int OperatorSys::toComputerSys(all_planes data) {
@@ -44,58 +48,68 @@ void OperatorSys::getCommands(){
 	char buffer[10];
 
 	string command;
-	string ID;
-	string direction;
+	int ID;
 	int amount;
 
+	std::vector<Plane*> planes;
+
+
+//	this->arrivalPosX = arrivalPosX;
+//	this->arrivalPosY = arrivalPosY;
+//	this->arrivalPosZ = arrivalPosZ;
+//	this->arrivalVelX = arrivalVelX;
+//	this->arrivalVelY = arrivalVelY;
+//	this->arrivalVelZ = arrivalVelZ;
+
 	while (1){
-		// get the populated airspace in order to manipulate the planes in the airspace
-		airspace = Plane::airspace;
+			// get the populated airspace in order to manipulate the planes in the airspace
+			airspace = Plane::airspace;
 
-		cout << "Please enter a string (end to terminate): ";
-		    cout.flush();
-		    cin.getline(szInput, _MAX_PATH);
 
-		cout << "Send a command to a certain plane followed by its ID:  ";
-		cin >> command >> direction >> amount >> ID;
+			cout << "Send a command to a certain plane followed by its ID:  ";
+			cin >> command >> amount >> ID;
 
-		switch (s_mapStringValues[szInput]) {
+			switch (hashit(command)) {
 
-				// radar req, formulate a response and send
-				case evStringValue1 == "speed up": //likely only going to change the velocity in the x direction
-					for (const auto& plane : planes) {
-						if (ID == plane->ID){
-							plane.XVel == amount;
+					// radar req, formulate a response and send
+					case speedUpX: //likely only going to change the velocity in the x direction
+						for (const auto& plane : planes) {
+							if (ID == plane->ID){
+								plane->arrivalVelX = amount;
+							}
+							else{
+								cout << "plane ID not found, please try again";
+							}
 						}
-						else{
-							cout << "plane ID not found, please try again";
-						}
-					}
-				break;
-
-				// responde to different types of commands
-				case evStringValue2 == "change flight level": //only going to be changing the flight level in the Y direction
-					for (const auto& plane : planes) {
-						if (ID == plane->ID){
-							plane.YVel == amount;
-						}
-						else{
-							cout << "plane ID not found, please try again";
-						}
-					}
-				break;
-
-				case evStringValue3 == "change flight position": //going to change the position in the Z axis
-					for (const auto& plane : planes) {
-						if (ID == plane->ID){
-							plane.YVel == amount;
-						}
-						else{
-							cout << "plane ID not found, please try again";
-						}
-					}
 					break;
 
+					// responde to different types of commands
+					case speedUpY: //only going to be changing the flight level in the Y direction
+						for (const auto& plane : planes) {
+							if (ID == plane->ID){
+								plane->arrivalVelY = amount;
+							}
+							else{
+								cout << "plane ID not found, please try again";
+							}
+						}
+					break;
+
+					case speedUpZ: //going to change the position in the Z axis
+						for (const auto& plane : planes) {
+							if (ID == plane->ID){
+								plane->arrivalVelZ = amount;
+							}
+							else{
+								cout << "plane ID not found, please try again";
+							}
+						}
+					break;
+					case unknownCode: //if input isn't what is expected, cout
+						cout << "wrong code. please try again";
+					break;
+				}
+		}
 
 
 		//timer.waitTimer();
@@ -130,7 +144,7 @@ void OperatorSys::getCommands(){
 			allPlaneData.clear();
 		}
 	}
-}
+
 
 
 void* operator_system_start_routine(void *arg)
@@ -146,18 +160,6 @@ OperatorSys::OperatorSys() {
 		{
 			printf("Operator System: Failed to start.\n\n");
 		}
-}
-
-void Initialize()
-{
-  s_mapStringValues["First Value"] = evStringValue1;
-  s_mapStringValues["Second Value"] = evStringValue2;
-  s_mapStringValues["Third Value"] = evStringValue3;
-  s_mapStringValues["end"] = evEnd;
-
-  cout << "s_mapStringValues contains "
-       << s_mapStringValues.size()
-       << " entries." << endl;
 }
 
 OperatorSys::~OperatorSys() {

@@ -27,6 +27,7 @@
 #include "Structures.h"
 #include <unistd.h>	// To be removed, for testing only
 #include "Plane.h"
+#include <map>
 
 
 class OperatorSys {
@@ -40,6 +41,8 @@ public:
 	int toComputerSys(all_planes);
 	virtual ~OperatorSys();
 	void getCommands();
+	void Initialize();
+
 };
 
 #endif /* SRC_OPERATORSYS_H_ */

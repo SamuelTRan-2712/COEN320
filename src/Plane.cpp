@@ -74,6 +74,7 @@ Plane::Plane(int ID, int time, int arrivalPosX, int arrivalPosY, int arrivalPosZ
 	if(pthread_create(&thread_id,NULL,plane_start_routine,(void *) this)!=EOK){
 		printf("Plane: failed to initialize.");
 	}
+
 }
 
 
