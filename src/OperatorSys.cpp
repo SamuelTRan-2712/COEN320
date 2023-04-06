@@ -51,7 +51,7 @@ void OperatorSys::getCommands(){
 
 	string commands[5] = {"speed up", "change flight level", "change flight position", "speed up", "change flight level"};
 	int amounts[5] = {100, 200, 300, 400, 500};
-	int IDs[5] = {1, 2, 3, 4, 5};
+	int IDs[5] = {2, 3, 4, 5, 6};
 
 
 	while (1){
@@ -75,13 +75,14 @@ void OperatorSys::getCommands(){
 						for (const auto& plane : atc.planes) {
 							if (IDs[i] == plane->ID){
 
-					            cout << "old velocity of plane " << i << atc.planes[i]->arrivalVelX;
+					            cout << "old velocity of plane IN SPEEX UP X " << i << atc.planes[i]->arrivalVelX;
 
 								plane->arrivalVelX = amounts[i];
 
-					            cout << "new velocity of plane 1: " << atc.planes[i]->arrivalVelX;
-
+					            cout << "new velocity of plane IN SPEED UP X " << atc.planes[i]->arrivalVelX;
+					            break;
 							}
+
 							else{
 								cout << "plane ID not found, please try again";
 							}
@@ -92,11 +93,19 @@ void OperatorSys::getCommands(){
 					// respond to different types of commands
 					case speedUpY: //only going to be changing the flight level in the Y direction
 						for (const auto& plane : atc.planes) {
+
 							if (IDs[i] == plane->ID){
+
+					            cout << "old velocity of plane IN SPEED UP Y" << plane->ID << " " << atc.planes[i]->arrivalVelY << endl;
+
+
 								plane->arrivalVelY = amounts[i];
+
+					            cout << "new velocity of plane IN SPEED UP Y " << plane->ID << " " <<  atc.planes[i]->arrivalVelY << endl;
+					            break;
 							}
 							else{
-								cout << "plane ID not found, please try again";
+								cout << "plane ID: " << IDs[i] << " not found!!!";
 							}
 						}
 					break;
@@ -104,7 +113,11 @@ void OperatorSys::getCommands(){
 					case speedUpZ: //going to change the position in the Z axis
 						for (const auto& plane : atc.planes) {
 							if (IDs[i] == plane->ID){
+
+					            cout << "IN SPEED UP Z " << plane->ID << " " << atc.planes[i]->arrivalVelY << endl;
+
 								plane->arrivalVelZ = amounts[i];
+								break;
 							}
 							else{
 								cout << "plane ID not found, please try again";
