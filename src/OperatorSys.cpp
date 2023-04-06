@@ -53,18 +53,15 @@ void OperatorSys::getCommands(){
 	int amounts[5] = {100, 200, 300, 400, 500};
 	int IDs[5] = {1, 2, 3, 4, 5};
 
-	std::vector<Plane*> planes;
-
 
 	while (1){
 			timer.wait_next_activation();
 			// get the populated airspace in order to manipulate the planes in the airspace
-			airspace = Plane::airspace;
 
-			if (airspace.empty()){
-						printf("Airspace empty, no airplanes to change");
-					}
-					else {
+			if (atc.planes.empty()){
+				printf("Airspace empty, no airplanes to change");
+				}
+			else {
 
 		for (int i = 0; i < 5; i++) {
 			switch (hashit(commands[i])) {
@@ -73,15 +70,16 @@ void OperatorSys::getCommands(){
 					case speedUpX: //likely only going to change the velocity in the x direction
 
 						cout << "hellooooooo";
+						cout<<atc.planes.size();
 
-						for (const auto& plane : planes) {
+						for (const auto& plane : atc.planes) {
 							if (IDs[i] == plane->ID){
 
-					            cout << "old velocity of plane 1: " << planes[i]->arrivalVelX;
+					            cout << "old velocity of plane " << i << atc.planes[i]->arrivalVelX;
 
 								plane->arrivalVelX = amounts[i];
 
-					            cout << "new velocity of plane 1: " << planes[i]->arrivalVelX;
+					            cout << "new velocity of plane 1: " << atc.planes[i]->arrivalVelX;
 
 							}
 							else{
@@ -93,7 +91,7 @@ void OperatorSys::getCommands(){
 
 					// respond to different types of commands
 					case speedUpY: //only going to be changing the flight level in the Y direction
-						for (const auto& plane : planes) {
+						for (const auto& plane : atc.planes) {
 							if (IDs[i] == plane->ID){
 								plane->arrivalVelY = amounts[i];
 							}
@@ -104,7 +102,7 @@ void OperatorSys::getCommands(){
 					break;
 
 					case speedUpZ: //going to change the position in the Z axis
-						for (const auto& plane : planes) {
+						for (const auto& plane : atc.planes) {
 							if (IDs[i] == plane->ID){
 								plane->arrivalVelZ = amounts[i];
 							}
@@ -160,7 +158,9 @@ void* operator_system_start_routine(void *arg)
 }
 
 
-OperatorSys::OperatorSys() {
+OperatorSys::OperatorSys(ATC atc) {
+
+		this->atc=atc;
 		this->server_coid = 0;
 		if(pthread_create(&thread_id,NULL,operator_system_start_routine,(void *) this)!=EOK)
 		{

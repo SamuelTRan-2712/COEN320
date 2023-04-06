@@ -23,7 +23,7 @@ int main (int argc, char* argv[]) {
 	ComputerSystem compsys;
 	Radar radar;
 
-	OperatorSys operatorsys;
+	OperatorSys operatorsys(atc);
 
 
 	for(int i=0; i < atc.planes.size(); i++){

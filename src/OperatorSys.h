@@ -28,6 +28,8 @@
 #include <unistd.h>	// To be removed, for testing only
 #include "Plane.h"
 #include <map>
+#include "ATC.h"
+
 
 
 class OperatorSys {
@@ -37,8 +39,9 @@ class OperatorSys {
 
 
 public:
+	ATC atc;
 	pthread_t thread_id;
-	OperatorSys();
+	OperatorSys(ATC atc);
 	int toComputerSys(all_planes);
 	virtual ~OperatorSys();
 	void getCommands();
