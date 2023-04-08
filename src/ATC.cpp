@@ -26,7 +26,7 @@ int ATC::readInput() {
   std::string separator = " ";
 
 
-	std::ofstream outfile("planes.txt");
+	std::ofstream outfile("planerss.txt");
 
 	if (!outfile.is_open()) {
 	    std::cerr << "Unable to create file input.txt\n";
@@ -75,9 +75,7 @@ int ATC::readInput() {
 	  return -1;
 	}
 
-	while (getline (infile,line)) {
-		// if (line.empty()) continue;  // skip empty line
-		infile >>  ID >> arrivalTime >> arrivalPosX >> arrivalPosY >> arrivalPosZ >> arrivalVelX >> arrivalVelY >> arrivalVelZ;
+	while (infile >>  ID >> arrivalTime >> arrivalPosX >> arrivalPosY >> arrivalPosZ >> arrivalVelX >> arrivalVelY >> arrivalVelZ) {
 		//create plane objects and add pointer to each plane to a vector
 		Plane *plane = new Plane(ID, arrivalTime, arrivalPosX, arrivalPosY, arrivalPosZ, arrivalVelX, arrivalVelY, arrivalVelZ);
 		planes.push_back(plane);
