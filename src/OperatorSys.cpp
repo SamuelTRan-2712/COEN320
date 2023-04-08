@@ -51,20 +51,17 @@ void OperatorSys::getCommands(){
 
 	string commands[5] = {"speed up", "change flight level", "change flight position", "speed up", "change flight level"};
 	int amounts[5] = {100, 200, 300, 400, 500};
-	int IDs[5] = {1, 2, 3, 4, 5};
-
-	std::vector<Plane*> planes;
+	int IDs[5] = {2, 3, 4, 5, 6};
 
 
 	while (1){
 			timer.wait_next_activation();
 			// get the populated airspace in order to manipulate the planes in the airspace
-			airspace = Plane::airspace;
 
-			if (airspace.empty()){
-						printf("Airspace empty, no airplanes to change");
-					}
-					else {
+			if (atc.planes.empty()){
+				printf("Airspace empty, no airplanes to change");
+				}
+			else {
 
 		for (int i = 0; i < 5; i++) {
 			switch (hashit(commands[i])) {
@@ -72,20 +69,19 @@ void OperatorSys::getCommands(){
 					// radar req, formulate a response and send
 					case speedUpX: //likely only going to change the velocity in the x direction
 
-						cout << "hellooooooo";
-
-						for (const auto& plane : planes) {
+						for (const auto& plane : atc.planes) {
 							if (IDs[i] == plane->ID){
 
-					            cout << "old velocity of plane 1: " << planes[i]->arrivalVelX;
+					            cout << "plane ID: " << plane->ID << " old velocity of plane in X axis: " << atc.planes[i]->arrivalVelY << endl;
 
 								plane->arrivalVelX = amounts[i];
 
-					            cout << "new velocity of plane 1: " << planes[i]->arrivalVelX;
-
+					            cout << "plane ID: " << plane->ID << " new velocity of plane in X axis: " << atc.planes[i]->arrivalVelY << endl;
+					            break;
 							}
+
 							else{
-								cout << "plane ID not found, please try again";
+								// cout << "plane ID not found, please try again";
 							}
 						}
 
@@ -93,23 +89,38 @@ void OperatorSys::getCommands(){
 
 					// respond to different types of commands
 					case speedUpY: //only going to be changing the flight level in the Y direction
-						for (const auto& plane : planes) {
+						for (const auto& plane : atc.planes) {
+
 							if (IDs[i] == plane->ID){
+
+					            cout << "plane ID: " << plane->ID << " old velocity of plane in Y axis: " << atc.planes[i]->arrivalVelY << endl;
+
+
 								plane->arrivalVelY = amounts[i];
+
+					            cout << "plane ID: " << plane->ID << " new velocity of plane in Y axis: " << atc.planes[i]->arrivalVelY << endl;
+					            break;
 							}
 							else{
-								cout << "plane ID not found, please try again";
+								// cout << "plane ID: " << IDs[i] << " not found!!!";
 							}
 						}
 					break;
 
 					case speedUpZ: //going to change the position in the Z axis
-						for (const auto& plane : planes) {
+						for (const auto& plane : atc.planes) {
 							if (IDs[i] == plane->ID){
+
+					            cout << "plane ID: " << plane->ID << " old velocity of plane in Z axis: " << atc.planes[i]->arrivalVelY << endl;
+
 								plane->arrivalVelZ = amounts[i];
+
+					            cout << "plane ID: " << plane->ID << " new velocity of plane in Z axis: " << atc.planes[i]->arrivalVelY << endl;
+
+								break;
 							}
 							else{
-								cout << "plane ID not found, please try again";
+								// cout << "plane ID not found, please try again";
 							}
 						}
 					break;
@@ -160,7 +171,9 @@ void* operator_system_start_routine(void *arg)
 }
 
 
-OperatorSys::OperatorSys() {
+OperatorSys::OperatorSys(ATC atc) {
+
+		this->atc=atc;
 		this->server_coid = 0;
 		if(pthread_create(&thread_id,NULL,operator_system_start_routine,(void *) this)!=EOK)
 		{
