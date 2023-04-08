@@ -69,22 +69,19 @@ void OperatorSys::getCommands(){
 					// radar req, formulate a response and send
 					case speedUpX: //likely only going to change the velocity in the x direction
 
-						cout << "hellooooooo";
-						cout<<atc.planes.size();
-
 						for (const auto& plane : atc.planes) {
 							if (IDs[i] == plane->ID){
 
-					            cout << "old velocity of plane IN SPEEX UP X " << i << atc.planes[i]->arrivalVelX;
+					            cout << "plane ID: " << plane->ID << " old velocity of plane in X axis: " << atc.planes[i]->arrivalVelY << endl;
 
 								plane->arrivalVelX = amounts[i];
 
-					            cout << "new velocity of plane IN SPEED UP X " << atc.planes[i]->arrivalVelX;
+					            cout << "plane ID: " << plane->ID << " new velocity of plane in X axis: " << atc.planes[i]->arrivalVelY << endl;
 					            break;
 							}
 
 							else{
-								cout << "plane ID not found, please try again";
+								// cout << "plane ID not found, please try again";
 							}
 						}
 
@@ -96,16 +93,16 @@ void OperatorSys::getCommands(){
 
 							if (IDs[i] == plane->ID){
 
-					            cout << "old velocity of plane IN SPEED UP Y" << plane->ID << " " << atc.planes[i]->arrivalVelY << endl;
+					            cout << "plane ID: " << plane->ID << " old velocity of plane in Y axis: " << atc.planes[i]->arrivalVelY << endl;
 
 
 								plane->arrivalVelY = amounts[i];
 
-					            cout << "new velocity of plane IN SPEED UP Y " << plane->ID << " " <<  atc.planes[i]->arrivalVelY << endl;
+					            cout << "plane ID: " << plane->ID << " new velocity of plane in Y axis: " << atc.planes[i]->arrivalVelY << endl;
 					            break;
 							}
 							else{
-								cout << "plane ID: " << IDs[i] << " not found!!!";
+								// cout << "plane ID: " << IDs[i] << " not found!!!";
 							}
 						}
 					break;
@@ -114,13 +111,16 @@ void OperatorSys::getCommands(){
 						for (const auto& plane : atc.planes) {
 							if (IDs[i] == plane->ID){
 
-					            cout << "IN SPEED UP Z " << plane->ID << " " << atc.planes[i]->arrivalVelY << endl;
+					            cout << "plane ID: " << plane->ID << " old velocity of plane in Z axis: " << atc.planes[i]->arrivalVelY << endl;
 
 								plane->arrivalVelZ = amounts[i];
+
+					            cout << "plane ID: " << plane->ID << " new velocity of plane in Z axis: " << atc.planes[i]->arrivalVelY << endl;
+
 								break;
 							}
 							else{
-								cout << "plane ID not found, please try again";
+								// cout << "plane ID not found, please try again";
 							}
 						}
 					break;
