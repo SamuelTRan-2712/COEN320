@@ -1,8 +1,3 @@
-/*
- * CommunicationSystem.cpp
- *
- *
- */
 #include "CommunicationSystem.h"
 using namespace std;
 

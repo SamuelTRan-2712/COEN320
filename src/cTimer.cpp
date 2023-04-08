@@ -1,8 +1,18 @@
 #include "cTimer.h"
 
 
-
 cTimer::cTimer(uint32_t period_sec, uint32_t period_msec, uint32_t offset_sec,uint32_t offset_msec ) {
+
+	const int signal = SIGALRM;
+	sigemptyset(&sig_set); // initialize a signal set
+	sigaddset(&sig_set, signal); // add SIGALRM to the signal set
+	sigprocmask(SIG_BLOCK, &sig_set, NULL); //block the signal
+
+	/* set the signal event a timer expiration */
+	memset(&sig_event, 0, sizeof(struct sigevent));
+	sig_event.sigev_notify = SIGEV_SIGNAL;
+	sig_event.sigev_signo = signal;
+
 	chid = ChannelCreate(0);
 	coid = ConnectAttach(0,0,chid,0,0);
 	if(coid == -1){
@@ -16,26 +26,12 @@ cTimer::cTimer(uint32_t period_sec, uint32_t period_msec, uint32_t offset_sec,ui
 		}
 
 	set_timer(period_sec,1000000* period_msec,offset_sec,1000000* offset_msec);
-//	if (set_timer(offset, period) < 0)
-//	{
-//		perror("Start periodic timer");
-//	}
 
-	// cycles_per_sec = SYSPAGE_ENTRY(qtime)->cycles_per_sec; //dont think we need this either
 }
 
 cTimer::~cTimer() {
 
 }
-
-
-//void cTimer::set_timer(int offset, int period){ believe we can delete this!!
-//	timer_spec.it_value.tv_sec = offset;
-//	timer_spec.it_value.tv_nsec = 0;
-//	timer_spec.it_interval.tv_sec = period;
-//	timer_spec.it_interval.tv_nsec = 0;
-	//timer_settime(timer_id, 0, &timer_spec, NULL);
-//}
 
 void cTimer::set_timer(uint32_t p_sec, uint32_t p_nsec, uint32_t o_sec, uint32_t o_nsec){
 	int res;
@@ -60,11 +56,10 @@ void cTimer::set_timer(uint32_t p_sec, uint32_t p_nsec, uint32_t o_sec, uint32_t
 
 void cTimer::wait_next_activation(){ //need to change arguments, see if we can change message buffer and size of
 	 int rcvid = MsgReceive(chid, &msg_buffer, sizeof(msg_buffer), NULL); //once message has been received, the clock will wake up again
-	 //int MsgReceive( int chid, void * msg,    size_t size,  struct _msg_info * info );
+
 } //receives a message from the client
 
 
-//	int MsgReply( int rcvid,  long status,  const void* msg,   size_t size ); replies to the client
 
 
 
