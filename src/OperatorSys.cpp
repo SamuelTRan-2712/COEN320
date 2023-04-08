@@ -40,7 +40,7 @@ int OperatorSys::toComputerSys(all_planes data) {
 void OperatorSys::getCommands(){
 
 
-	cTimer timer(5,0, 5, 0); //creating a polling server which will call this function every 5 seconds, asking if we want to change airplane commands
+	cTimer timer(20,0, 5, 0); //creating a polling server which will call this function every 5 seconds, asking if we want to change airplane commands
 
 	msg msg;
 	msg.hdr.type = 0x00;
@@ -55,6 +55,7 @@ void OperatorSys::getCommands(){
 
 
 	while (1){
+
 			timer.wait_next_activation();
 			// get the populated airspace in order to manipulate the planes in the airspace
 
@@ -128,38 +129,14 @@ void OperatorSys::getCommands(){
 						cout << "wrong code. please try again";
 					break;
 				}
-		}
-					}
-
-			//need the operator system to be treated as a client, plane to be the server
-
-
-			for (int i : airspace){
-
-
-				// go through the airspace and ping each plane
-				if ((server_coid = name_open(itoa(i,buffer,10), 0)) == -1){
-					printf("Radar: Failed connection to server %d\n\n", i);
-					break;
-				}
-				if (MsgSend(server_coid, &msg, sizeof(msg), &rmsg, sizeof(rmsg)) == -1){
-					printf("Radar: Failed to send message %d\n\n", i);
-					break;
-				}
-				name_close(server_coid);
-				// printf("Radar: Data of Plane #%d: Coords(%d, %d, %d)\n\n", rmsg.ID, rmsg.posX, rmsg.posY, rmsg.posZ);
-
-				// add plane data to vector destined to computer system
-				allPlaneData.push_back(rmsg);
 			}
+		}
 
-			// send data of all planes to computer system
-			// reset allPlaneData
 			data.allPlanes = allPlaneData;
 			toComputerSys(data);
 			allPlaneData.clear();
-		}
 	}
+}
 
 
 
