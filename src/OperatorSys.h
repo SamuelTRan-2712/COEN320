@@ -42,7 +42,7 @@ public:
 	ATC atc;
 	pthread_t thread_id;
 	OperatorSys(ATC atc);
-	int toComputerSys(all_planes);
+	int toComputerSys(compsys_msg);
 	virtual ~OperatorSys();
 	void getCommands();
 	void Initialize();

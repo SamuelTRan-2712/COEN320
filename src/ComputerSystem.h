@@ -21,10 +21,10 @@ public:
 	std::vector<plane_info> planes;
 
 	ComputerSystem();
-	int fromRadar();
-	int fromOperatorSys();
+	int listen();
 	std::vector<violating_pair_ids> getCollision();
 	int toDisplay(compsys_display_msg);
+	int toCommunicationSystem(plane_msg);
 	virtual ~ComputerSystem();
 };
 

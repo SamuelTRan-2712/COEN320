@@ -7,7 +7,7 @@ using namespace std;
 
 
 // ----------------------------------- Class Methods -----------------------------------
-int Radar::toComputerSys(all_planes data){
+int Radar::toComputerSys(compsys_msg data){
 	if ((server_coid = name_open(COMPUTER_ATTACH_POINT, 0)) == -1) {
 		printf("Radar: Failed connection to server %d\n\n");
 		return EXIT_FAILURE;
@@ -24,10 +24,10 @@ int Radar::toComputerSys(all_planes data){
 void Radar::pingAirspace(){
 	cTimer timer(1,0, 1, 0); //creating a timer of period 1 with an offset of 1. CHANGE IF WE WANT TO CHANGE THE AMOUNT OF TIME BETWEEN PINGS
 
-	msg msg;
+	plane_msg msg;
 	msg.hdr.type = 0x00;
 	plane_info rmsg;
-	all_planes data;
+	compsys_msg data;
 	data.hdr.type = 0x01;
 	char buffer[10];
 
@@ -38,7 +38,7 @@ void Radar::pingAirspace(){
 
 
 //		TODO: set timer to ping planes every X seconds using cTimer
-		//timer.waitTimer();
+		timer.wait_next_activation();
 		sleep(1);	// to be removed, for testing only
 
 

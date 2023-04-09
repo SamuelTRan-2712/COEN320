@@ -6,6 +6,7 @@
 #include "Display.h"
 #include "ATC.h"
 #include "OperatorSys.h"
+#include "CommunicationSystem.h"
 #include <unistd.h>
 #include <fstream>
 #include <string>
@@ -20,6 +21,7 @@ int main (int argc, char* argv[]) {
 	atc.readInput();
 
 	Display display;
+	CommunicationSystem commsys;
 	ComputerSystem compsys;
 	Radar radar;
 
