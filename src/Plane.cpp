@@ -29,11 +29,7 @@ int Plane::updateLocation(){
 	}
 
 	// loop until plane exits the monitored airspace
-<<<<<<< HEAD
 	while (arrivalPosX < 100000 && arrivalPosY < 100000 && arrivalPosZ < 25000 && arrivalPosZ > 15000) //when an airplane has entered the airspace, add it to the vector
-=======
-	while (arrivalPosX < 100000 && arrivalPosY < 100000 && arrivalPosZ < 25000) //when an airplane has entered the airspace, add it to the vector, need to add && arrivalPos > 10000 for it to enter the airspace
->>>>>>> master
 	{
 //		 timer.wait_next_activation();
 		 sleep(1);	// to be removed, for testing only
