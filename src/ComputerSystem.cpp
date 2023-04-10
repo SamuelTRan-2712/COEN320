@@ -107,45 +107,7 @@ int ComputerSystem::toDisplay(compsys_display_msg msg){
 		return EXIT_FAILURE;
 	}
 
-<<<<<<< HEAD
 	if (MsgSend(server_coid, &msg, sizeof(msg), 0, 0) == -1) { //sending message to the server
-=======
-	while (1) {
-		rcvid = MsgReceive(attach->chid, &new_data, sizeof(new_data), NULL); // receive messages from operator system
-		if (rcvid == -1) {
-			break;
-		}
-
-		if (rcvid == 0) {
-		    switch (new_data.hdr.code) {
-		    	case _PULSE_CODE_DISCONNECT:
-		    		ConnectDetach(new_data.hdr.scoid);
-
-		    		break;
-		    	case _PULSE_CODE_UNBLOCK:
-
-		    		break;
-		    	default:
-
-		    		break;
-		    }
-		    continue;
-		}
-
-		if (new_data.hdr.type == _IO_CONNECT ) {
-			MsgReply( rcvid, EOK, NULL, 0 );
-		    continue;
-		}
-
-		if (new_data.hdr.type > _IO_BASE && new_data.hdr.type <= _IO_MAX ) {
-			MsgError( rcvid, ENOSYS );
-		    continue;
-		}
-
-		if (new_data.hdr.type == 0x02) {
-
-			cout << "message from operator system has been received";
->>>>>>> master
 
 		printf("Failed to send message %d\n\n");
 		return EXIT_FAILURE;

@@ -154,23 +154,9 @@ int OperatorSys::toComputerSys(compsys_msg data) {
 							toComputerSys(data);
 
 						}
-<<<<<<< HEAD
 					}
 
 		}
-=======
-					break;
-					case unknownCode: //if input isn't what is expected, cout
-						cout << "wrong code. please try again";
-					break;
-				}
-			}
-		}
-
-			data.allPlanes = allPlaneData;
-			toComputerSys(data);
-			allPlaneData.clear();
->>>>>>> master
 	}
 }
 
