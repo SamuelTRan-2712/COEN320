@@ -100,7 +100,23 @@ int ComputerSystem::listen() { //computer system is the server. needs to create 
 
 		else if (data.hdr.type == 0x02) { //need to change this to show recieval of messages
 
-			cout << "message from operator system has been received\n";
+			cout << "Message from operator system has been received\n";
+
+			// write command to log
+			// log to file
+			std::string var = "Command " + std::to_string(data.ID) + " - " + std::to_string(data.arrivalPosX) + " - " + std::to_string(data.arrivalPosY) + " - " + std::to_string(data.arrivalPosZ) + " - " + std::to_string(data.arrivalVelX) + " - " + std::to_string(data.arrivalVelY) + " - " + std::to_string(data.arrivalVelZ) + "\n";
+
+			const int length = var.length();
+
+			// declaring character array (+1 for null terminator)
+			char* char_array = new char[length + 1];
+
+			// copying the contents of the
+			// string to char array
+			strcpy(char_array, var.c_str());
+
+			writeToFileLog(char_array, length);
+
 			plane_msg.ID = data.ID;
 			plane_msg.arrivalPosX = data.arrivalPosX;
 			plane_msg.arrivalPosY = data.arrivalPosY;
@@ -179,8 +195,27 @@ int ComputerSystem::writeToFile(char* buffer, int size) {
 }
 
 
+int ComputerSystem::writeToFileLog(char* buffer, int size) {
+	int  size_written;
+
+	/* write the text              */
+	size_written = write( this->fd2, buffer, size );
+
+	/* test for error              */
+	if( size_written != size ) {
+		perror( "Error writing log" );
+		return EXIT_FAILURE;
+	}
+
+	/* close the file              */
+
+	return EXIT_SUCCESS;
+}
+
+
 ComputerSystem::ComputerSystem() {
 	this->fd = creat( "/data/home/qnxuser/history.txt", S_IRUSR | S_IWUSR | S_IXUSR );
+	this->fd2 = creat( "/data/home/qnxuser/log.txt", S_IRUSR | S_IWUSR | S_IXUSR );
 	this->server_coid = -1;
 	this->rcvid = -1;
 	if (pthread_create(&thread_id,NULL,compsys_start_routine,(void *) this) != EOK) {

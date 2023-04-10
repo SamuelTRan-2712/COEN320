@@ -15,7 +15,7 @@
 class ComputerSystem {
 	int rcvid;
 	int server_coid;
-	int  fd;
+	int  fd, fd2;
 
 public:
 	pthread_t thread_id;
@@ -28,6 +28,7 @@ public:
 	int toCommunicationSystem(plane_msg);
 
 	int writeToFile(char*, int);
+	int writeToFileLog(char*, int);
 
 	virtual ~ComputerSystem();
 };
