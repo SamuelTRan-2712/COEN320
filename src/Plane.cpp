@@ -3,7 +3,7 @@ using namespace std;
 
 // ----------------------------------- Constants -----------------------------------
 vector<int> Plane::airspace;
-const uint64_t timeout = 8000000;
+// const uint64_t timeout = 8000000;
 
 
 // ----------------------------------- Class Methods  -----------------------------------
@@ -29,13 +29,19 @@ int Plane::updateLocation(){
 	}
 
 	// loop until plane exits the monitored airspace
+<<<<<<< HEAD
 	while (arrivalPosX < 100000 && arrivalPosY < 100000 && arrivalPosZ < 25000 && arrivalPosZ > 15000) //when an airplane has entered the airspace, add it to the vector
+=======
+	while (arrivalPosX < 100000 && arrivalPosY < 100000 && arrivalPosZ < 25000) //when an airplane has entered the airspace, add it to the vector, need to add && arrivalPos > 10000 for it to enter the airspace
+>>>>>>> master
 	{
 //		 timer.wait_next_activation();
 		 sleep(1);	// to be removed, for testing only
 
 		// add plane id to airspace vector
-		if (find(airspace.begin(), airspace.end(), ID) != airspace.end()) {}
+		if (find(airspace.begin(), airspace.end(), ID) != airspace.end()) {
+			cout << "plane not inside the airspace";
+		}
 		else {
 			airspace.push_back(ID); //adds ID of the plane to the vector, not the entire plane itself
 		}

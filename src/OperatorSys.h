@@ -1,14 +1,3 @@
-/*
- * OperatorSys.h
- *
- *  Created on: Mar. 28, 2023
- *      Author: hughmckenzie
- */
-
-#ifndef SRC_OPERATORSYS_H_
-#define SRC_OPERATORSYS_H_
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -49,4 +38,3 @@ public:
 
 };
 
-#endif /* SRC_OPERATORSYS_H_ */

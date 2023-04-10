@@ -39,10 +39,7 @@ int OperatorSys::toComputerSys(compsys_msg data) {
 
 
 
-
-void OperatorSys::getCommands(){
-
-	cTimer timer(5,0, 5, 0); //creating a polling server which will call this function every 5 seconds, asking if we want to change airplane commands
+	cTimer timer(20,0, 5, 0); //creating a polling server which will call this function every 5 seconds, asking if we want to change airplane commands
 
 	compsys_msg data;
 	data.hdr.type = 0x02;
@@ -54,6 +51,7 @@ void OperatorSys::getCommands(){
 
 
 	while (1){
+
 			timer.wait_next_activation();
 			// get the populated airspace in order to manipulate the planes in the airspace
 
@@ -156,10 +154,25 @@ void OperatorSys::getCommands(){
 							toComputerSys(data);
 
 						}
+<<<<<<< HEAD
 					}
 
 		}
+=======
+					break;
+					case unknownCode: //if input isn't what is expected, cout
+						cout << "wrong code. please try again";
+					break;
+				}
+			}
+		}
+
+			data.allPlanes = allPlaneData;
+			toComputerSys(data);
+			allPlaneData.clear();
+>>>>>>> master
 	}
+}
 
 
 

@@ -24,7 +24,8 @@ class cTimer {
 	char msg_buffer[100];
 
 	uint64_t cycles_per_sec;
-	uint64_t tick_cycles, tock_cycles;
+	sigset_t sig_set;
+	struct timespec tv;
 
 	int chid;
 	int coid;
