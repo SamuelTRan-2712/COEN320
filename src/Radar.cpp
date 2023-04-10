@@ -4,7 +4,6 @@ using namespace std;
 
 // ----------------------------------- Constants -----------------------------------
 #define COMPUTER_ATTACH_POINT "ComputerSystem"
-#define ATTACH_POINT "my_channel"
 
 
 // ----------------------------------- Class Methods -----------------------------------
@@ -32,7 +31,8 @@ void Radar::pingAirspace(){
 	plane_info rmsg;
 	all_planes data;
 	data.hdr.type = 0x01;
-	char attach_points[10];
+	char buffer[10];
+
 
 	while (1){
 
@@ -48,11 +48,11 @@ void Radar::pingAirspace(){
 		else {
 			for (int i : airspace){
 				// go through the airspace and ping each plane
-				if ((server_coid = name_attach(ATTACH_POINT , 0)) == -1){
+				if ((server_coid = name_open(itoa(i,buffer,10), 0)) == -1){
 					printf("Radar: Failed connection to server %d\n\n", i);
 					break;
 				}
-				printf("Client sending position %.2f m \n", pos_msg );
+				printf("Client sending position %.2f m \n", pos_msg);
 				if (MsgSend(server_coid, &pos_msg, sizeof(pos_msg), &rmsg, sizeof(rmsg)) == -1){
 					printf("Radar: Failed to send message %d\n\n", i);
 					break;
