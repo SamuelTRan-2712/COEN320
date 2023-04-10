@@ -36,7 +36,7 @@ int Plane::updateLocation(){
 
 		// add plane id to airspace vector
 		if (find(airspace.begin(), airspace.end(), ID) != airspace.end()) {
-			cout << "plane not inside the airspace";
+			// cout << "plane not inside the airspace";
 		}
 		else {
 			airspace.push_back(ID); //adds ID of the plane to the vector, not the entire plane itself

@@ -76,6 +76,25 @@ int ComputerSystem::listen() { //computer system is the server. needs to create 
 			msg.planes = all_planes;
 			msg.colliding_planes = getCollision();
 
+			// write to file
+			for (const auto& plane : all_planes.allPlanes) {
+
+				// log to file
+				std::string var = "Plane " + std::to_string(plane.ID) + " - " + std::to_string(plane.arrivalPosX) + " - " + std::to_string(plane.arrivalPosY) + " - " + std::to_string(plane.arrivalPosZ) + " - " + std::to_string(plane.arrivalVelX) + " - " + std::to_string(plane.arrivalVelY) + " - " + std::to_string(plane.arrivalVelZ) + "\n";
+
+				const int length = var.length();
+
+				// declaring character array (+1 for null terminator)
+				char* char_array = new char[length + 1];
+
+				// copying the contents of the
+				// string to char array
+				strcpy(char_array, var.c_str());
+
+				writeToFile(char_array, length);
+
+			}
+
 			toDisplay(msg);
 		}
 
@@ -142,7 +161,26 @@ void* compsys_start_routine(void *arg) {
 }
 
 
+int ComputerSystem::writeToFile(char* buffer, int size) {
+	int  size_written;
+
+	/* write the text              */
+	size_written = write( this->fd, buffer, size );
+
+	/* test for error              */
+	if( size_written != size ) {
+		perror( "Error writing history" );
+		return EXIT_FAILURE;
+	}
+
+	/* close the file              */
+
+	return EXIT_SUCCESS;
+}
+
+
 ComputerSystem::ComputerSystem() {
+	this->fd = creat( "/data/home/qnxuser/history.txt", S_IRUSR | S_IWUSR | S_IXUSR );
 	this->server_coid = -1;
 	this->rcvid = -1;
 	if (pthread_create(&thread_id,NULL,compsys_start_routine,(void *) this) != EOK) {
@@ -152,5 +190,5 @@ ComputerSystem::ComputerSystem() {
 
 
 ComputerSystem::~ComputerSystem() {
-
+	close( fd );
 }

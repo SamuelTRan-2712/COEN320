@@ -15,6 +15,7 @@
 class ComputerSystem {
 	int rcvid;
 	int server_coid;
+	int  fd;
 
 public:
 	pthread_t thread_id;
@@ -25,6 +26,9 @@ public:
 	std::vector<violating_pair_ids> getCollision();
 	int toDisplay(compsys_display_msg);
 	int toCommunicationSystem(plane_msg);
+
+	int writeToFile(char*, int);
+
 	virtual ~ComputerSystem();
 };
 
