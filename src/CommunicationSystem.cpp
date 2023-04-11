@@ -8,7 +8,8 @@ using namespace std;
 
 
 // ----------------------------------- Class Methods -----------------------------------
-int CommunicationSystem::toPlane(plane_msg plane_msg) {
+// Helper function to help send command to planes
+int CommunicationSystem::toPlane(plane_msg& plane_msg) {
 	char buffer[10];
 	char* plane_server = itoa(plane_msg.ID,buffer,10);
 	plane_msg.hdr.type = 0x01;

@@ -6,6 +6,7 @@
 #define COMMUNICATION_ATTACH_POINT "CommunicationSystem"
 
 // ----------------------------------- Class Methods -----------------------------------
+// Calculate to see if there are any planes violatingg regulations
 std::vector<violating_pair_ids> ComputerSystem::getCollision() {
 	std::vector<violating_pair_ids> violating_planes;
 
@@ -26,6 +27,7 @@ std::vector<violating_pair_ids> ComputerSystem::getCollision() {
 }
 
 
+// Main loop will listen to messages from radar and operator system and send message to display, communication system
 int ComputerSystem::listen() { //computer system is the server. needs to create a channel, receive a message, and reply to the client
 	name_attach_t *attach;
 	compsys_msg data;
@@ -66,6 +68,7 @@ int ComputerSystem::listen() { //computer system is the server. needs to create 
 		    continue;
 		}
 
+		// If message is from radar
 		if (data.hdr.type == 0x01) {
 			planes = data.allPlanes;
 
@@ -98,6 +101,7 @@ int ComputerSystem::listen() { //computer system is the server. needs to create 
 			toDisplay(msg);
 		}
 
+		// If message is from operator system
 		else if (data.hdr.type == 0x02) { //need to change this to show recieval of messages
 
 			cout << "Message from operator system has been received\n";
@@ -136,6 +140,7 @@ int ComputerSystem::listen() { //computer system is the server. needs to create 
 }
 
 
+// Helper function to send data to display
 int ComputerSystem::toDisplay(compsys_display_msg msg){
 	if ((server_coid = name_open(DISPLAY_ATTACH_POINT, 0)) == -1) { //opening the channel to connect to the server
 		printf("CompSys failed connection to server %d\n\n");
@@ -153,6 +158,7 @@ int ComputerSystem::toDisplay(compsys_display_msg msg){
 }
 
 
+// Helper function to send data to communication system
 int ComputerSystem::toCommunicationSystem(plane_msg plane_msg){
 	if ((server_coid = name_open(COMMUNICATION_ATTACH_POINT, 0)) == -1) { //opening the channel to connect to the server
 		printf("CompSys failed connection to CommSys %d\n\n");
@@ -177,6 +183,7 @@ void* compsys_start_routine(void *arg) {
 }
 
 
+// Helper function to write history file
 int ComputerSystem::writeToFile(char* buffer, int size) {
 	int  size_written;
 
@@ -195,6 +202,7 @@ int ComputerSystem::writeToFile(char* buffer, int size) {
 }
 
 
+// Helper function to write to log file
 int ComputerSystem::writeToFileLog(char* buffer, int size) {
 	int  size_written;
 
@@ -213,7 +221,9 @@ int ComputerSystem::writeToFileLog(char* buffer, int size) {
 }
 
 
+// Initialize file directory for history and log file
 ComputerSystem::ComputerSystem() {
+	// Initialize file directory for history and log file
 	this->fd = creat( "/data/home/qnxuser/history.txt", S_IRUSR | S_IWUSR | S_IXUSR );
 	this->fd2 = creat( "/data/home/qnxuser/log.txt", S_IRUSR | S_IWUSR | S_IXUSR );
 	this->server_coid = -1;

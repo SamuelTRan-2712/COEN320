@@ -14,6 +14,7 @@ enum string_code {
 };
 
 
+// Helper function to parse command
 string_code hashit (std::string const& inString) {
     if (inString == "speed up") return speedUpY;
     if (inString == "change flight level") return speedUpZ;
@@ -38,15 +39,15 @@ int OperatorSys::toComputerSys(compsys_msg data) {
 
 void OperatorSys::getCommands() {
 
-	cTimer timer(5,0, 5, 0); //creating a polling server which will call this function every 5 seconds, asking if we want to change airplane commands
+	cTimer timer(5,0, 25, 0); //creating a polling server which will call this function every 5 seconds, asking if we want to change airplane commands
 
 	compsys_msg data;
 	data.hdr.type = 0x02;
 	char buffer[10];
 
 	string commands[5] = {"speed up", "change flight level", "change flight position", "speed up", "change flight level"};
-	int amounts[5] = {100};
-	int IDs[5] = {2};
+	int amounts[5] = {100, 200, 300, 400, 500};
+	int IDs[5] = {6, 6, 2, 6, 6};
 
 	while (1) {
   
@@ -60,46 +61,43 @@ void OperatorSys::getCommands() {
 		else {
 			for (int i = 0; i < 5; i++) {
 
-				data.ID = IDs[i];
-
 				for (const auto& plane : atc.planes) {
-					if (IDs[i] == plane->ID){
-
+					if (IDs[i] == plane->ID) {
+						data.ID = IDs[i];
 						data.arrivalPosX = plane->arrivalPosX;
 						data.arrivalPosY = plane->arrivalPosY;
 						data.arrivalPosZ = plane->arrivalPosZ;
 						data.arrivalVelX = plane->arrivalVelX;
 						data.arrivalVelY = plane->arrivalVelY;
 						data.arrivalVelZ = plane->arrivalVelZ;
+
+						switch (hashit(commands[i])) {
+
+							// radar req, formulate a response and send
+							case speedUpX: //likely only going to change the velocity in the x direction
+								data.arrivalVelX = amounts[i];
+							break;
+
+							// respond to different types of commands
+							case speedUpY: //only going to be changing the flight level in the Y direction
+								data.arrivalVelY = amounts[i];
+							break;
+
+							case speedUpZ: //going to change the position in the Z axis
+								data.arrivalVelZ = amounts[i];
+							break;
+
+							case unknownCode: //if input isn't what is expected, cout
+								cout << "wrong code. please try again";
+							break;
+						}
+
+						// send command computer system
+						toComputerSys(data);
+
 						break;
 					}
 				}
-
-
-				switch (hashit(commands[i])) {
-
-						// radar req, formulate a response and send
-						case speedUpX: //likely only going to change the velocity in the x direction
-							data.arrivalVelX = amounts[i];
-						break;
-
-						// respond to different types of commands
-						case speedUpY: //only going to be changing the flight level in the Y direction
-							data.arrivalVelY = amounts[i];
-						break;
-
-						case speedUpZ: //going to change the position in the Z axis
-							data.arrivalVelZ = amounts[i];
-						break;
-
-						case unknownCode: //if input isn't what is expected, cout
-							cout << "wrong code. please try again";
-						break;
-					}
-
-
-				// send data of all planes to computer system
-				toComputerSys(data);
 
 			}
 		}

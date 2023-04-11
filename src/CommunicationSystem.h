@@ -21,7 +21,7 @@ class CommunicationSystem {
 public:
 	pthread_t thread_id;
 	CommunicationSystem();
-	int toPlane(plane_msg);
+	int toPlane(plane_msg&);
 	int fromCompSys();
 	virtual ~CommunicationSystem();
 };

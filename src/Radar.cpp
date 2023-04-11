@@ -37,9 +37,7 @@ void Radar::pingAirspace(){
 		airspace = Plane::airspace;
 
 
-//		TODO: set timer to ping planes every X seconds using cTimer
 		timer.wait_next_activation();
-		sleep(1);	// to be removed, for testing only
 
 
 		if (airspace.empty()){
