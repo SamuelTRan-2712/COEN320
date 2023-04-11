@@ -4,6 +4,7 @@ using namespace std;
 
 // ----------------------------------- Constants -----------------------------------
 #define COMPUTER_ATTACH_POINT "ComputerSystem"
+
 #define ATTACH_POINT "my_channel"
 
 
@@ -32,7 +33,8 @@ void Radar::pingAirspace(){
 	plane_info rmsg;
 	all_planes data;
 	data.hdr.type = 0x01;
-	char attach_points[10];
+	char attach_points[20];
+	name_attach_t *attach;
 
 	while (1){
 
@@ -47,19 +49,27 @@ void Radar::pingAirspace(){
 		}
 		else {
 			for (int i : airspace){
+
+//				/* Create a local name (/dev/name/local/...) */
+//				   if ((attach = name_attach(NULL, ATTACH_POINT, 0)) == NULL) {
+//					   printf("Radar: Failed connection to server %d\n\n", i);
+
+//					   break;
+//				   }
+
 				// go through the airspace and ping each plane
-				if ((server_coid = name_attach(ATTACH_POINT , 0)) == -1){
+				if ((server_coid = name_open(itoa(i,attach_points,20), 0)) == -1){
 					printf("Radar: Failed connection to server %d\n\n", i);
 					break;
 				}
-				printf("Client sending position %.2f m \n", pos_msg );
+
 				if (MsgSend(server_coid, &pos_msg, sizeof(pos_msg), &rmsg, sizeof(rmsg)) == -1){
 					printf("Radar: Failed to send message %d\n\n", i);
 					break;
 				}
 
 				name_close(server_coid);
-				//printf("Radar: Data of Plane #%d: Coords(%d, %d, %d)\n\n", rmsg.ID, rmsg.posX, rmsg.posY, rmsg.posZ);
+				printf("Radar: Data of Plane #%d: Coords(%d, %d, %d)\n\n", rmsg.ID, rmsg.arrivalPosX, rmsg.arrivalPosY, rmsg.arrivalPosZ);
 
 				// add plane data to vector destined to computer system
 				allPlaneData.push_back(rmsg);
