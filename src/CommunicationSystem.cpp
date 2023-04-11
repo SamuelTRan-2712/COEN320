@@ -3,7 +3,7 @@ using namespace std;
 
 
 // ----------------------------------- Constants -----------------------------------
-#define COMPUTER_ATTACH_POINT "ComputerSystem"
+#define COMPUTER_SYSTEM_ATTACH_POINT "ComputerSystem"
 #define COMMUNICATION_SYSTEM_ATTACH_POINT "CommunicationSystem"
 
 

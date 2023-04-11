@@ -24,7 +24,7 @@
 class OperatorSys {
 	int server_coid;
 	std::vector<int> airspace;
-	std::vector<plane_info>allPlaneData;
+	std::vector<planes_information>allPlaneData;
 
 
 public:

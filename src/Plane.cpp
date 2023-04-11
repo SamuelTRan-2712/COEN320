@@ -4,7 +4,6 @@ using namespace std;
 // ----------------------------------- Constants -----------------------------------
 vector<int> Plane::airspace;
 
-
 // ----------------------------------- Class Methods  -----------------------------------
 // Plane start routine that calls updateLocation()
 void* plane_start_routine(void *arg){
@@ -21,7 +20,7 @@ int Plane::getAirspaceSize() {
 int Plane::updateLocation(){
 	cTimer timer(1,0,1, 0); //updates location every one second
 	name_attach_t *attach;
-	plane_info plane_info;
+	planes_information plane_info;
 	plane_msg plane_msg;
 	char buffer[10];
 

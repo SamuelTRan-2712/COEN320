@@ -9,25 +9,25 @@ typedef struct _my_msg {
 } msg;
 
 
-typedef struct _plane_info {
+typedef struct _planes_information {
 	int ID, arrivalPosX, arrivalPosY, arrivalPosZ, arrivalVelX, arrivalVelY, arrivalVelZ;
-} plane_info;
+} planes_information;
 
 
 typedef struct _all_planes {
 	msg_header_t hdr;
-	std::vector<plane_info> allPlanes;
+	std::vector<planes_information> allPlanes;
 } all_planes;
 
 typedef struct {
 	msg_header_t hdr;
-	std::vector<plane_info> allPlanes;
+	std::vector<planes_information> allPlanes;
 	int ID, arrivalPosX, arrivalPosY, arrivalPosZ, arrivalVelX, arrivalVelY, arrivalVelZ;
 } compsys_msg;
 
 typedef struct _new_planes { //trying to use this from operator system to edit planes data
 	msg_header_t hdr;
-	std::vector<plane_info> allPlanes;
+	std::vector<planes_information> allPlanes;
 } new_planes;
 
 

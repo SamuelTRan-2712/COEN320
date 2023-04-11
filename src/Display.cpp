@@ -83,7 +83,7 @@ int Display::runDisplay() {
 						}
 
 						if (planes.size() != 0){
-							for(plane_info x: planes){
+							for(planes_information x: planes){
 								if((19-i) == ((x.arrivalPosX/20000)+1) && ((j) == ((x.arrivalPosY/10000)+1))) {
 									std::cout << x.ID;
 									isprinted = true;
@@ -109,7 +109,7 @@ int Display::runDisplay() {
 							}
 
 							if (planes.size() != 0){
-								for(plane_info x: planes){
+								for(planes_information x: planes){
 									if((19 - i) == ((x.arrivalPosX/2000)+1) && ((j+10) == ((x.arrivalPosZ/1000)+1))) {
 										std::cout << x.ID;
 										isprinted = true;
@@ -122,7 +122,7 @@ int Display::runDisplay() {
 						}
 						std::cout << "\n";
 					}
-			for(plane_info y: planes) {
+			for(planes_information y: planes) {
 				std::cout << "P" << y.ID << ": " << "\n";
 				std::cout << "Position X: " << y.arrivalPosX << "\n";
 				std::cout << "Position Y: " << y.arrivalPosY << "\n";

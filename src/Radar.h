@@ -16,11 +16,11 @@
 class Radar {
 	int server_coid;
 	std::vector<int> airspace;
-	std::vector<plane_info>allPlaneData;
+	std::vector<planes_information>allPlaneData;
 public:
 	pthread_t thread_id;
 	Radar();
-	void pingAirspace();
+	void getAirspace();
 	int toComputerSys(compsys_msg);
 	virtual ~Radar();
 //	void removePlaneFromAirspace(int planeID);

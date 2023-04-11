@@ -1,16 +1,14 @@
 #include "Radar.h"
 using namespace std;
 
-
 // ----------------------------------- Constants -----------------------------------
-#define COMPUTER_ATTACH_POINT "ComputerSystem"
+#define COMPUTER_SYSTEM_ATTACH_POINT "ComputerSystem"
 
-#define ATTACH_POINT "my_channel"
-
+//#define ATTACH_POINT "my_channel"
 
 // ----------------------------------- Class Methods -----------------------------------
 int Radar::toComputerSys(compsys_msg data){
-	if ((server_coid = name_open(COMPUTER_ATTACH_POINT, 0)) == -1) {
+	if ((server_coid = name_open(COMPUTER_SYSTEM_ATTACH_POINT, 0)) == -1) {
 		printf("Radar: Failed connection to server %d\n\n");
 		return EXIT_FAILURE;
 	}
@@ -31,13 +29,13 @@ int Radar::toComputerSys(compsys_msg data){
 //}
 
 
-void Radar::pingAirspace(){
-	cTimer timer(1,0, 1, 0); //creating a timer of period 1 with an offset of 1. CHANGE IF WE WANT TO CHANGE THE AMOUNT OF TIME BETWEEN PINGS
+void Radar::getAirspace(){
+	cTimer timer(1,0, 1, 0);
 
 	msg pos_msg;
 	pos_msg.hdr.type = 0x00;
 
-	plane_info rmsg;
+	planes_information plane_msg;
 	compsys_msg data;
 	data.hdr.type = 0x01;
 	char attach_points[20];
@@ -73,20 +71,18 @@ void Radar::pingAirspace(){
 					break;
 				}
 
-				if (MsgSend(server_coid, &pos_msg, sizeof(pos_msg), &rmsg, sizeof(rmsg)) == -1){
+				if (MsgSend(server_coid, &pos_msg, sizeof(pos_msg), &plane_msg, sizeof(plane_msg)) == -1){
 					printf("Radar: Failed to send message %d\n\n", i);
 					break;
 				}
 
 				name_close(server_coid);
-				printf("Radar: Data of Plane #%d: Coords(%d, %d, %d)\n\n", rmsg.ID, rmsg.arrivalPosX, rmsg.arrivalPosY, rmsg.arrivalPosZ);
+				printf("Radar: Data of Plane #%d: Coords(%d, %d, %d)\n\n", plane_msg.ID, plane_msg.arrivalPosX, plane_msg.arrivalPosY, plane_msg.arrivalPosZ);
 
 				// add plane data to vector destined to computer system
-				allPlaneData.push_back(rmsg);
+				allPlaneData.push_back(plane_msg);
 			}
 
-			// send data of all planes to computer system
-			// reset allPlaneData
 			data.allPlanes = allPlaneData;
 			toComputerSys(data);
 			allPlaneData.clear();
@@ -98,7 +94,7 @@ void Radar::pingAirspace(){
 void* radar_start_routine(void *arg)
 {
 	Radar& radar = *(Radar*) arg;
-	radar.pingAirspace();
+	radar.getAirspace();
 	return NULL;
 }
 

@@ -17,7 +17,7 @@ class Display {
 
 public:
 	pthread_t thread_id;
-	std::vector<plane_info> planes;
+	std::vector<planes_information> planes;
 	void * threadTask(void * );
 	Display();
 	int runDisplay();

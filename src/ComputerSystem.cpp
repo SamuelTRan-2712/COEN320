@@ -1,7 +1,7 @@
 #include "ComputerSystem.h"
 
 // ----------------------------------- Constants -----------------------------------
-#define COMPUTER_ATTACH_POINT "ComputerSystem"
+#define COMPUTER_SYSTEM_ATTACH_POINT "ComputerSystem"
 #define DISPLAY_ATTACH_POINT "Display"
 #define COMMUNICATION_ATTACH_POINT "CommunicationSystem"
 
@@ -51,7 +51,7 @@ int ComputerSystem::listen() { //computer system is the server. needs to create 
 	plane_msg plane_msg;
 	plane_msg.hdr.type = 0x01;
 
-	if((attach = name_attach(NULL, COMPUTER_ATTACH_POINT, 0)) == NULL) { //create a channel
+	if((attach = name_attach(NULL, COMPUTER_SYSTEM_ATTACH_POINT, 0)) == NULL) { //create a channel
 		printf("ComputerSys failed to create channel\n\n");
 		return EXIT_FAILURE;
 	}

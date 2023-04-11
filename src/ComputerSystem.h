@@ -19,7 +19,7 @@ class ComputerSystem {
 
 public:
 	pthread_t thread_id;
-	std::vector<plane_info> planes;
+	std::vector<planes_information> planes;
 
 	ComputerSystem();
 	int listen();

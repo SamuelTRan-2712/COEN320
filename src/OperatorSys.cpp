@@ -1,7 +1,7 @@
 #include "OperatorSys.h"
 
 // ----------------------------------- Constants -----------------------------------
-#define COMPUTER_ATTACH_POINT "ComputerSystem"
+#define COMPUTER_SYSTEM_ATTACH_POINT "ComputerSystem"
 
 // ----------------------------------- Class Methods -----------------------------------
 
@@ -24,7 +24,7 @@ string_code hashit (std::string const& inString) {
 
         
 int OperatorSys::toComputerSys(compsys_msg data) {
-	if ((server_coid = name_open(COMPUTER_ATTACH_POINT, 0)) == -1) { //connects to the computer attach point
+	if ((server_coid = name_open(COMPUTER_SYSTEM_ATTACH_POINT, 0)) == -1) { //connects to the computer attach point
 			printf("OpSys: Failed connection to server %d\n\n");
 			return EXIT_FAILURE;
 	}
