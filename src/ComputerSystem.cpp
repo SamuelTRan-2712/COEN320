@@ -6,6 +6,12 @@
 #define COMMUNICATION_ATTACH_POINT "CommunicationSystem"
 
 // ----------------------------------- Class Methods -----------------------------------
+int getDistanceInFuture(int posA, int VelA, int posB, int VelB) {
+	int locationA = posA + (VelA * 180);
+	int locationB = posB + (VelB * 180);
+	return locationA - locationB;
+}
+
 // Calculate to see if there are any planes violatingg regulations
 std::vector<violating_pair_ids> ComputerSystem::getCollision() {
 	std::vector<violating_pair_ids> violating_planes;
@@ -16,6 +22,16 @@ std::vector<violating_pair_ids> ComputerSystem::getCollision() {
 				abs(planes.at(i).arrivalPosY - planes.at(j).arrivalPosY) < 3000 ||
 				abs(planes.at(i).arrivalPosZ - planes.at(j).arrivalPosZ) < 1000)
 			{
+					violating_pair_ids violating_pair_ids;
+					violating_pair_ids.plane_ID_1 = planes.at(i).ID;
+					violating_pair_ids.plane_ID_2 = planes.at(j).ID;
+					violating_planes.push_back(violating_pair_ids);
+			}
+			if (abs(getDistanceInFuture(planes.at(i).arrivalPosX, planes.at(i).arrivalVelX, planes.at(j).arrivalPosX, planes.at(j).arrivalVelX)) < 3000 ||
+				abs(getDistanceInFuture(planes.at(i).arrivalPosY, planes.at(i).arrivalVelY, planes.at(j).arrivalPosY, planes.at(j).arrivalVelY)) < 3000 ||
+				abs(getDistanceInFuture(planes.at(i).arrivalPosZ, planes.at(i).arrivalVelZ, planes.at(j).arrivalPosZ, planes.at(j).arrivalVelZ)) < 1000)
+			{
+					cout << "Alarm: plane " <<  planes.at(i).ID << " and plane " << planes.at(j).ID << " will violate regulations in 3 minutes\n";
 					violating_pair_ids violating_pair_ids;
 					violating_pair_ids.plane_ID_1 = planes.at(i).ID;
 					violating_pair_ids.plane_ID_2 = planes.at(j).ID;
