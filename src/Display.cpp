@@ -87,57 +87,18 @@ int Display::runDisplay() {
 
 		std::cout << "X-Y view" << endl;
 		for(int i = 0; i < 20; i++){
-			for (int j = 0; j < 50; j++){
-				bool isprinted = false;
-					if (i == 0) {
-						std::cout << "-";
-					}
-					else if (j == 0) {
-						std::cout << "|";
-					}
-					else if (i == 19) {
-						std::cout << "-";
-					}
-					else if (j == 49) {
-						std::cout << "|";
-					}
-
-					if (planes.size() != 0){
-						for(plane_info x: planes){
-							if((19-i) == ((x.arrivalPosX/2000)+1) && ((j) == ((x.arrivalPosY/1000)+1))) {
-								std::cout << x.ID;
-								isprinted = true;
-							}
-						}
-
-					}
-					if (!isprinted && i != 0 && j != 0 && i != 19 && j != 49) {
-						std::cout << " ";
-					}
-				}
-				std::cout << "\n";
-		}
-
-		std::cout << "X-Z view" << endl;
-				for(int i = 0; i < 20; i++){
-					for (int j = 0; j < 50; j++){
-						bool isprinted = false;
-						if (i == 0) {
+				for (int j = 0; j < 50; j++){
+					bool isprinted = false;
+						if (i == 0 || i == 19) {
 							std::cout << "-";
 						}
-						else if (j == 0) {
-							std::cout << "|";
-						}
-						else if (i == 19) {
-							std::cout << "-";
-						}
-						else if (j == 49) {
+						else if (j == 0 || j == 49) {
 							std::cout << "|";
 						}
 
 						if (planes.size() != 0){
 							for(plane_info x: planes){
-								if((19-i) == ((x.arrivalPosX/2000)+1) && ((j) == ((x.arrivalPosZ/1000)+1))) {
+								if((19-i) == ((x.arrivalPosX/20000)+1) && ((j) == ((x.arrivalPosY/10000)+1))) {
 									std::cout << x.ID;
 									isprinted = true;
 								}
@@ -148,18 +109,44 @@ int Display::runDisplay() {
 						}
 					}
 					std::cout << "\n";
-				}
-		for(plane_info y: planes) {
-			std::cout << "P" << y.ID << ": " << "\n";
-			//std::cout << "ID: " << ID.at(s) << "\n";
-			std::cout << "Position X: " << y.arrivalPosX << "\n";
-			std::cout << "Position Y: " << y.arrivalPosY << "\n";
-			std::cout << "Position Z: " << y.arrivalPosZ << "\n" << "\n";
-			if (y.arrivalPosZ > 25000 || y.arrivalPosY > 100000 || y.arrivalPosX > 100000){
-				//std::cout << y.ID << " arrivalPosZ "<< y.arrivalPosZ << " arrivalPosX "<< y.arrivalPosX << " arrivalPosY "<< y.arrivalPosY << endl;
-				std::cout << "Plane "<< y.ID << " has exited the monitor" << endl << endl;
 			}
-		}
+
+			std::cout << "X-Z view" << endl;
+					for(int i = 0; i < 20; i++){
+						for (int j = 0; j < 50; j++){
+							bool isprinted = false;
+							if (i == 0 || i == 19) {
+								std::cout << "-";
+							}
+							else if (j == 0 || j == 49) {
+								std::cout << "|";
+							}
+
+							if (planes.size() != 0){
+								for(plane_info x: planes){
+									if((19 - i) == ((x.arrivalPosX/2000)+1) && ((j+10) == ((x.arrivalPosZ/1000)+1))) {
+										std::cout << x.ID;
+										isprinted = true;
+									}
+								}
+							}
+							if (!isprinted && i != 0 && j != 0 && i != 19 && j != 49) {
+								std::cout << " ";
+							}
+						}
+						std::cout << "\n";
+					}
+			for(plane_info y: planes) {
+				std::cout << "P" << y.ID << ": " << "\n";
+				//std::cout << "ID: " << ID.at(s) << "\n";
+				std::cout << "Position X: " << y.arrivalPosX << "\n";
+				std::cout << "Position Y: " << y.arrivalPosY << "\n";
+				std::cout << "Position Z: " << y.arrivalPosZ << "\n" << "\n";
+				if (y.arrivalPosY >= 100000 || y.arrivalPosX >= 100000 || y.arrivalPosZ > 25000){
+					std::cout << y.ID << " arrivalPosZ "<< y.arrivalPosZ << " arrivalPosX "<< y.arrivalPosX << " arrivalPosY "<< y.arrivalPosY << endl;
+					std::cout << "Plane "<< y.ID << " has exited the monitor" << endl << endl;
+				}
+			}
 	}
 	name_detach(attach, 0);
 	return EXIT_SUCCESS;
