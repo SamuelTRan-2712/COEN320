@@ -5,7 +5,7 @@ using namespace std;
 vector<int> Plane::airspace;
 
 // ----------------------------------- Class Methods  -----------------------------------
-// Plane start routine that calls updateLocation()
+
 void* plane_start_routine(void *arg){
 	Plane& plane = *(Plane*) arg;
 	plane.updateLocation();
@@ -16,7 +16,7 @@ int Plane::getAirspaceSize() {
     return airspace.size();
 }
 
-// Updates location every second and listens to ping from radar
+
 int Plane::updateLocation(){
 	cTimer timer(1,0,1, 0); //updates location every one second
 	name_attach_t *attach;
@@ -29,25 +29,21 @@ int Plane::updateLocation(){
 		return EXIT_FAILURE;
 	}
 
-	// loop until plane exits the monitored airspace
 	while (arrivalPosX < 100000 && arrivalPosY < 100000 && arrivalPosZ < 25000 && arrivalPosZ > 15000) //when an airplane has entered the airspace, add it to the vector
 	{
 		 timer.wait_next_activation();
 
-		// add plane id to airspace vector
-		if (find(airspace.begin(), airspace.end(), ID) != airspace.end()) {
+		if (find(airspace.begin(), airspace.end(), ID) != airspace.end()) { //airspace finding plane
 			// cout << "plane not inside the airspace";
 		}
 		else {
-			airspace.push_back(ID); //adds ID of the plane to the vector, not the entire plane itself
+			airspace.push_back(ID); //adds ID of the plane to the vector, not the entire plane itself, useful for display
 		}
 
-		// update location
 		this->arrivalPosX += arrivalVelX;
 		this->arrivalPosY += arrivalVelY;
 		this->arrivalPosZ += arrivalVelZ;
 
-		// listen for messages from radar and send reply
 		plane_info = {ID, arrivalPosX, arrivalPosY, arrivalPosZ, arrivalVelX, arrivalVelY, arrivalVelZ}; //message info being sent to the client
 		rcvid = MsgReceive(attach->chid, &plane_msg, sizeof(plane_msg), NULL);
 
@@ -67,9 +63,9 @@ int Plane::updateLocation(){
 		}
 	}
 
-	// remove plane id from the airspace and kill thread
+
 	airspace.erase(remove(airspace.begin(), airspace.end(), ID), airspace.end());
-	name_detach(attach, 0);
+	name_detach(attach, 0); //detaching all threads
 	pthread_exit(NULL);
 	return EXIT_SUCCESS;
 }

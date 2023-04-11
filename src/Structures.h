@@ -14,11 +14,6 @@ typedef struct _planes_information {
 } planes_information;
 
 
-typedef struct _all_planes {
-	msg_header_t hdr;
-	std::vector<planes_information> allPlanes;
-} all_planes;
-
 typedef struct {
 	msg_header_t hdr;
 	std::vector<planes_information> allPlanes;
@@ -36,6 +31,10 @@ typedef struct {
 	int plane_ID_2;
 } violating_pair_ids;
 
+typedef struct _all_planes {
+	msg_header_t hdr;
+	std::vector<planes_information> allPlanes;
+} all_planes;
 
 typedef struct {
 	all_planes planes;

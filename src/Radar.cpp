@@ -45,7 +45,6 @@ void Radar::getAirspace(){
 
 		timer.wait_next_activation();
 		cout << "Timer waited 1s" << endl;
-		// get the populated airspace
 		airspace = Plane::airspace;
 
 
@@ -65,21 +64,18 @@ void Radar::getAirspace(){
 //					   break;
 //				   }
 
-				// go through the airspace and ping each plane
 				if ((server_coid = name_open(itoa(i,attach_points,20), 0)) == -1){
-					printf("Radar: Failed connection to server %d\n\n", i);
+					printf("Radar: Error occurred while attaching to channel %d\n\n", i);
 					break;
 				}
 
 				if (MsgSend(server_coid, &pos_msg, sizeof(pos_msg), &plane_msg, sizeof(plane_msg)) == -1){
-					printf("Radar: Failed to send message %d\n\n", i);
+					printf("Radar: Error occurred while sending message %d\n\n", i);
 					break;
 				}
 
 				name_close(server_coid);
 				printf("Radar: Data of Plane #%d: Coords(%d, %d, %d)\n\n", plane_msg.ID, plane_msg.arrivalPosX, plane_msg.arrivalPosY, plane_msg.arrivalPosZ);
-
-				// add plane data to vector destined to computer system
 				allPlaneData.push_back(plane_msg);
 			}
 

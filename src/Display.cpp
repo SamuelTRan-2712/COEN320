@@ -33,7 +33,7 @@ int Display::runDisplay() {
 	}
 
 	while(1){
-		rcvid = MsgReceive(attach->chid, &msg, sizeof(msg), NULL); // receive messages from radar
+		rcvid = MsgReceive(attach->chid, &msg, sizeof(msg), NULL);
 		if (rcvid == -1) {/* Error condition, exit */
 			break;
 		}
@@ -123,10 +123,10 @@ int Display::runDisplay() {
 						std::cout << "\n";
 					}
 			for(planes_information y: planes) {
-				std::cout << "P" << y.ID << ": " << "\n";
-				std::cout << "Position X: " << y.arrivalPosX << "\n";
-				std::cout << "Position Y: " << y.arrivalPosY << "\n";
-				std::cout << "Position Z: " << y.arrivalPosZ << "\n" << "\n";
+				std::cout << "PLANE ID: " << y.ID << "\n";
+				std::cout << "PLANE POSITION ON X AXIS: " << y.arrivalPosX << "\n";
+				std::cout << "PLANE POSITION ON Y AXIS: " << y.arrivalPosY << "\n";
+				std::cout << "PLANE POSITION ON Z AXIS: " << y.arrivalPosZ << "\n" << "\n";
 				if (y.arrivalPosY >= 100000 || y.arrivalPosX >= 100000 || y.arrivalPosZ > 25000){
 					std::cout << y.ID << " arrivalPosZ "<< y.arrivalPosZ << " arrivalPosX "<< y.arrivalPosX << " arrivalPosY "<< y.arrivalPosY << endl;
 					std::cout << "Plane "<< y.ID << " has exited the monitor" << endl << endl;
