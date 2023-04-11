@@ -37,7 +37,7 @@ public:
 	void setCoordinates(int arrivalPosX, int arrivalPosY, int arrivalPosZ);
 	void setVelocity(int arrivalVelX, int arrivalVelY, int arrivalVelZ);
 	void changeVelocity(int arrivalVelX, int arrivalVelY, int arrivalVelZ);
-	int updateLocation(); // update location every second
+	int updateLocation();
 	int getAirspaceSize();
 	double distanceBetweenPlanes(const Plane& p1, const Plane& p2);
 	int getID() const {
