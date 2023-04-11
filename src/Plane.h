@@ -40,7 +40,6 @@ public:
 	int updateLocation(); // update location every second
 	int getAirspaceSize();
 	double distanceBetweenPlanes(const Plane& p1, const Plane& p2);
-
 	int getID() const {
 	        return ID;
 	    }

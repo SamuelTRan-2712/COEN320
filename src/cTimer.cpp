@@ -1,6 +1,8 @@
 #include "cTimer.h"
 
 
+// ----------------------------------- Class Methods -----------------------------------
+
 cTimer::cTimer(uint32_t period_sec, uint32_t period_msec, uint32_t offset_sec,uint32_t offset_msec ) {
 
 	const int signal = SIGALRM;
@@ -36,13 +38,13 @@ cTimer::~cTimer() {
 void cTimer::set_timer(uint32_t p_sec, uint32_t p_nsec, uint32_t o_sec, uint32_t o_nsec){
 	int res;
 	/* set timer parameters */
-	timer_spec.it_value.tv_sec = o_sec; //I believe we only need offset and period here, the rest are specified in nano seconds
+	timer_spec.it_value.tv_sec = o_sec; //setting timer values
 	timer_spec.it_value.tv_nsec = o_nsec; //
 	timer_spec.it_interval.tv_sec = p_sec;
 	timer_spec.it_interval.tv_nsec = p_nsec;
 
 	/* create timer */
-	res = timer_create(CLOCK_REALTIME, &sig_event, &timer_id); //creating a real time timer with its own ID,
+	res = timer_create(CLOCK_REALTIME, &sig_event, &timer_id); //creating a real time timer with its own ID
 
 	if (res < 0) {
 		perror("creation of timer was unsuccesful, please try again");
@@ -54,10 +56,10 @@ void cTimer::set_timer(uint32_t p_sec, uint32_t p_nsec, uint32_t o_sec, uint32_t
 }
 
 
-void cTimer::wait_next_activation(){ //need to change arguments, see if we can change message buffer and size of
-	 int rcvid = MsgReceive(chid, &msg_buffer, sizeof(msg_buffer), NULL); //once message has been received, the clock will wake up again
+void cTimer::wait_next_activation(){
+	 int rcvid = MsgReceive(chid, &msg_buffer, sizeof(msg_buffer), NULL);
 
-} //receives a message from the client
+}
 
 
 

@@ -8,6 +8,7 @@ using namespace std;
 
 
 // ----------------------------------- Class Methods -----------------------------------
+
 // Helper function to help send command to planes
 int CommunicationSystem::toPlane(plane_msg& plane_msg) {
 	char buffer[10];
