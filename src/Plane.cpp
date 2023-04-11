@@ -3,7 +3,6 @@ using namespace std;
 
 // ----------------------------------- Constants -----------------------------------
 vector<int> Plane::airspace;
-// const uint64_t timeout = 8000000;
 
 
 // ----------------------------------- Class Methods  -----------------------------------
@@ -14,6 +13,9 @@ void* plane_start_routine(void *arg){
 	return NULL;
 }
 
+int Plane::getAirspaceSize() {
+    return airspace.size();
+}
 
 // Updates location every second and listens to ping from radar
 int Plane::updateLocation(){
@@ -74,6 +76,14 @@ int Plane::updateLocation(){
 }
 
 
+double distanceBetweenPlanes(const Plane& p1, const Plane& p2) { //distance between two planes function to send to computer sys
+  double dx = p1.arrivalPosX - p2.arrivalPosX;
+  double dy = p1.arrivalPosY - p2.arrivalPosY;
+  double dz = p1.arrivalPosZ - p2.arrivalPosZ;
+  return sqrt(dx*dx + dy*dy + dz*dz);
+}
+
+
 Plane::Plane(int ID, int time, int arrivalPosX, int arrivalPosY, int arrivalPosZ, int arrivalVelX, int arrivalVelY, int arrivalVelZ){
 	//creating planes, as well as initializing a thread for each plane
 	setPlane(ID, time, arrivalPosX, arrivalPosY, arrivalPosZ, arrivalVelX, arrivalVelY, arrivalVelZ);
@@ -103,6 +113,12 @@ void Plane::setCoordinates(int arrivalPosX, int arrivalPosY, int arrivalPosZ){
 	this->arrivalPosZ = arrivalPosZ;
 }
 
+
+void Plane::changeVelocity(int newVelX, int newVelY, int newVelZ) { //useful for communication with the operator system
+    this->arrivalVelX = newVelX;
+    this->arrivalVelY = newVelY;
+    this->arrivalVelZ = newVelZ;
+}
 
 void Plane::setVelocity(int arrivalVelX, int arrivaVelY, int arrivalVelZ){
 	this->arrivalVelX = arrivalVelX;

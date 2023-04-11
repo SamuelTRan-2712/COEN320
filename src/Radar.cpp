@@ -20,6 +20,14 @@ int Radar::toComputerSys(compsys_msg data){
 	return EXIT_SUCCESS;
 }
 
+//void Radar::removePlaneFromAirspace(int planeID) {
+//    airspace.erase(std::remove(airspace.begin(), airspace.end(), planeID), airspace.end());
+//}
+//
+//void Radar::addPlaneToAirspace(int planeID) {
+//    airspace.push_back(planeID);
+//}
+
 
 void Radar::pingAirspace(){
 	cTimer timer(1,0, 1, 0); //creating a timer of period 1 with an offset of 1. CHANGE IF WE WANT TO CHANGE THE AMOUNT OF TIME BETWEEN PINGS

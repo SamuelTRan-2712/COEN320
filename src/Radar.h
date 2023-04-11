@@ -23,6 +23,8 @@ public:
 	void pingAirspace();
 	int toComputerSys(compsys_msg);
 	virtual ~Radar();
+//	void removePlaneFromAirspace(int planeID);
+//	void addPlaneToAirspace(int planeID);
 };
 
 #endif /* RADAR_H_ */
