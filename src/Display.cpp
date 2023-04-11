@@ -56,11 +56,7 @@ int Display::runDisplay() {
 				 */
 					break;
 				default:
-				/*
-				 * A pulse sent by one of your processes or a
-				 * _PULSE_CODE_COIDDEATH or _PULSE_CODE_THREADDEATH
-				 * from the kernel?
-				 */
+
 					break;
 			}
 		    continue;
