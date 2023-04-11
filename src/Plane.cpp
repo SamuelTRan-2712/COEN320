@@ -19,8 +19,8 @@ void* plane_start_routine(void *arg){
 int Plane::updateLocation(){
 	cTimer timer(1,0,1, 0); //updates location every one second
 	name_attach_t *attach;
-	msg msg; //message which is being sent to the server
 	plane_info plane_info;
+	plane_msg plane_msg;
 	char buffer[10];
 
 	if((attach = name_attach(NULL, itoa(ID,buffer,10), 0)) == NULL){ //thread that wishes to receive messages creates a channel, thread that wishes to send messages connects to a channel
@@ -29,14 +29,13 @@ int Plane::updateLocation(){
 	}
 
 	// loop until plane exits the monitored airspace
-	while (arrivalPosX < 100000 && arrivalPosY < 100000 && arrivalPosZ < 25000) //when an airplane has entered the airspace, add it to the vector, need to add && arrivalPos > 10000 for it to enter the airspace
+	while (arrivalPosX < 100000 && arrivalPosY < 100000 && arrivalPosZ < 25000 && arrivalPosZ > 15000) //when an airplane has entered the airspace, add it to the vector
 	{
-		timer.wait_next_activation();
-		//sleep(1);	// to be removed, for testing only
+		 timer.wait_next_activation();
 
 		// add plane id to airspace vector
 		if (find(airspace.begin(), airspace.end(), ID) != airspace.end()) {
-			cout << "plane not inside the airspace";
+			// cout << "plane not inside the airspace";
 		}
 		else {
 			airspace.push_back(ID); //adds ID of the plane to the vector, not the entire plane itself
@@ -49,15 +48,21 @@ int Plane::updateLocation(){
 
 		// listen for messages from radar and send reply
 		plane_info = {ID, arrivalPosX, arrivalPosY, arrivalPosZ, arrivalVelX, arrivalVelY, arrivalVelZ}; //message info being sent to the client
-		rcvid = MsgReceive(attach->chid, &msg, sizeof(msg), NULL);
+		rcvid = MsgReceive(attach->chid, &plane_msg, sizeof(plane_msg), NULL);
 
 		if (rcvid == -1) {/* Error condition, exit */
 					break;
 		}
 
 
-		if (msg.hdr.type == 0x00){
+		if (plane_msg.hdr.type == 0x00) {
 			MsgReply(rcvid, EOK, &plane_info, sizeof(plane_info)); //sends a reply to the radar
+		}
+
+		else if (plane_msg.hdr.type == 0x01) {
+			cout << "New command: " << plane_msg.ID << " |arrivalPosZ "<< plane_msg.arrivalPosZ << " |arrivalPosX "<< plane_msg.arrivalPosX << " |arrivalPosY "<< plane_msg.arrivalPosY << " |arrivalVelX " << plane_msg.arrivalVelX << " |arrivalVelY " << plane_msg.arrivalVelY << " |arrivalVelZ " << plane_msg.arrivalVelZ << endl;
+			 setVelocity(plane_msg.arrivalVelX, plane_msg.arrivalVelY, plane_msg.arrivalVelZ);
+			 setCoordinates(plane_msg.arrivalPosX, plane_msg.arrivalPosY, plane_msg.arrivalPosZ);
 		}
 	}
 

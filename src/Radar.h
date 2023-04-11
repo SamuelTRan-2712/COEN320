@@ -21,7 +21,7 @@ public:
 	pthread_t thread_id;
 	Radar();
 	void pingAirspace();
-	int toComputerSys(all_planes);
+	int toComputerSys(compsys_msg);
 	virtual ~Radar();
 };
 

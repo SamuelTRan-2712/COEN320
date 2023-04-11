@@ -8,16 +8,17 @@ using namespace std;
 
 
 // ----------------------------------- Class Methods -----------------------------------
-int CommunicationSystem::toPlane(comm_command command) {
+// Helper function to help send command to planes
+int CommunicationSystem::toPlane(plane_msg& plane_msg) {
 	char buffer[10];
-	char* plane_server = itoa(command.ID,buffer,10);
-	command.hdr.type = 0x00;
+	char* plane_server = itoa(plane_msg.ID,buffer,10);
+	plane_msg.hdr.type = 0x01;
 
 	if ((server_coid = name_open(plane_server, 0)) == -1) {
 		printf("CommunicationSys: Failed connection to server %d\n\n");
 		return EXIT_FAILURE;
 	}
-	if (MsgSend(server_coid, &command, sizeof(command), 0, 0) == -1) {
+	if (MsgSend(server_coid, &plane_msg, sizeof(plane_msg), 0, 0) == -1) {
 		printf("CommunicationSys: Failed to send message %d\n\n");
 		return EXIT_FAILURE;
 	}
@@ -28,8 +29,7 @@ int CommunicationSystem::toPlane(comm_command command) {
 
 int CommunicationSystem::fromCompSys() {
 	name_attach_t *attach;
-	all_planes data;
-	compsys_display_msg msg;
+	plane_msg data;
 
 
 	if((attach = name_attach(NULL, COMMUNICATION_SYSTEM_ATTACH_POINT, 0)) == NULL) {
@@ -86,8 +86,7 @@ int CommunicationSystem::fromCompSys() {
 
 		// check for appropriate header and copy the data to planes
 		if (data.hdr.type == 0x01) {
-			// TODO: send message to plane
-
+			toPlane(data);
 		}
 		MsgReply(rcvid, EOK, 0, 0);
 	}

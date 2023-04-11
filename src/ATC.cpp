@@ -5,7 +5,6 @@
 
 
 ATC::ATC(){
-
 }
 
 ATC::~ATC(){
@@ -34,11 +33,11 @@ int ATC::readInput() {
 	  }
 
 
-	  outfile << "1 1       0     0 12500  500  500 0\n";
-	  outfile << "2 1    4000     0 12500  500  500 0\n";
-	  outfile << "3 1    8000     0 12500  500  500 1000\n";
-	  outfile << "4 1   12000     0 12500  500  500 0\n";
-	  outfile << "5 1   16000     0 12500  500  500 0\n";
+	  outfile << "1 1   98000     0 17500  500  500 0\n";
+	  outfile << "2 1    4000     0 17500  500  500 0\n";
+	  outfile << "3 1    8000     0 17500  500  500 1000\n";
+	  outfile << "4 1   12000     0 17500  500  500 0\n";
+	  outfile << "5 1   16000     0 17500  500  500 0\n";
 
 //	  outfile << "6 11      0  4000 12500  500  500 0\n";
 //	  outfile << "7 11  94000     0 12500  500  500 0\n";
@@ -75,6 +74,7 @@ int ATC::readInput() {
 	  return -1;
 	}
 
+	// Read input from file
 	while (infile >>  ID >> arrivalTime >> arrivalPosX >> arrivalPosY >> arrivalPosZ >> arrivalVelX >> arrivalVelY >> arrivalVelZ) {
 		//create plane objects and add pointer to each plane to a vector
 		Plane *plane = new Plane(ID, arrivalTime, arrivalPosX, arrivalPosY, arrivalPosZ, arrivalVelX, arrivalVelY, arrivalVelZ);

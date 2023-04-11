@@ -15,16 +15,21 @@
 class ComputerSystem {
 	int rcvid;
 	int server_coid;
+	int  fd, fd2;
 
 public:
 	pthread_t thread_id;
 	std::vector<plane_info> planes;
 
 	ComputerSystem();
-	int fromRadar();
-	int fromOperatorSys();
+	int listen();
 	std::vector<violating_pair_ids> getCollision();
 	int toDisplay(compsys_display_msg);
+	int toCommunicationSystem(plane_msg);
+
+	int writeToFile(char*, int);
+	int writeToFileLog(char*, int);
+
 	virtual ~ComputerSystem();
 };
 
