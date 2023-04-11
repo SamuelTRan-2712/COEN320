@@ -46,26 +46,11 @@ int CommunicationSystem::fromCompSys() {
 		if (rcvid == 0) {/* Pulse received */
 		    switch (data.hdr.code) {
 		    	case _PULSE_CODE_DISCONNECT:
-		    		/*
-		    		 * A client disconnected all its connections (called
-		    		 * name_close() for each name_open() of our name) or
-		    		 * terminated
-		    		 */
 		    		ConnectDetach(data.hdr.scoid);
 		    		break;
 		    	case _PULSE_CODE_UNBLOCK:
-		             /*
-		              * REPLY blocked client wants to unblock (was hit by
-		              * a signal or timed out).  It's up to you if you
-		              * reply now or later.
-		              */
 		    		break;
 		    	default:
-		             /*
-		              * A pulse sent by one of your processes or a
-		              * _PULSE_CODE_COIDDEATH or _PULSE_CODE_THREADDEATH
-		              * from the kernel?
-		              */
 		    		break;
 		    }
 		    continue;

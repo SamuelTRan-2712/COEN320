@@ -41,26 +41,14 @@ int Display::runDisplay() {
 		if (rcvid == 0) {/* Pulse received */
 			switch (data.hdr.code) {
 				case _PULSE_CODE_DISCONNECT:
-				/*
-				 * A client disconnected all its connections (called
-				 * name_close() for each name_open() of our name) or
-				 * terminated
-				 */
+
 					ConnectDetach(data.hdr.scoid);
 				    break;
 				case _PULSE_CODE_UNBLOCK:
-				/*
-				 * REPLY blocked client wants to unblock (was hit by
-				 * a signal or timed out).  It's up to you if you
-				 * reply now or later.
-				 */
+
 					break;
 				default:
-				/*
-				 * A pulse sent by one of your processes or a
-				 * _PULSE_CODE_COIDDEATH or _PULSE_CODE_THREADDEATH
-				 * from the kernel?
-				 */
+
 					break;
 			}
 		    continue;
@@ -80,10 +68,7 @@ int Display::runDisplay() {
 		// check for appropriate header and copy the data to planes
 		if (data.hdr.type == 0x01){
 			planes = data.allPlanes;
-			//printf("Dataaaaaa %d\n\n", data.allPlanes.size());
-//			for(plane_info i: planes){
-//				printf("plane id#%d; coords(%d,%d,%d)\n\n", i.ID, i.posX, i.posY, i.posZ);
-//			}
+
 		}
 		MsgReply(rcvid, EOK, 0, 0);
 		cTimer timer(5,0,5,0);
