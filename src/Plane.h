@@ -17,7 +17,10 @@
 #include <algorithm>
 #include "cTimer.h"
 #include "Structures.h"
+#include <math.h>
+
 #include <unistd.h>	// To be removed, for testing only
+
 using namespace std;
 
 
@@ -33,7 +36,10 @@ public:
 	void setPlane(int ID, int time, int arrivalPosX, int arrivalPosY, int arrivalPosZ, int arrivalVelX, int arrivalVelY, int arrivalVelZ);
 	void setCoordinates(int arrivalPosX, int arrivalPosY, int arrivalPosZ);
 	void setVelocity(int arrivalVelX, int arrivalVelY, int arrivalVelZ);
+	void changeVelocity(int arrivalVelX, int arrivalVelY, int arrivalVelZ);
 	int updateLocation(); // update location every second
+	int getAirspaceSize();
+	double distanceBetweenPlanes(const Plane& p1, const Plane& p2);
 	int getID() const {
 	        return ID;
 	    }

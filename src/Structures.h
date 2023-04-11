@@ -19,6 +19,12 @@ typedef struct _all_planes {
 	std::vector<plane_info> allPlanes;
 } all_planes;
 
+typedef struct {
+	msg_header_t hdr;
+	std::vector<plane_info> allPlanes;
+	int ID, arrivalPosX, arrivalPosY, arrivalPosZ, arrivalVelX, arrivalVelY, arrivalVelZ;
+} compsys_msg;
+
 typedef struct _new_planes { //trying to use this from operator system to edit planes data
 	msg_header_t hdr;
 	std::vector<plane_info> allPlanes;
@@ -39,8 +45,8 @@ typedef struct {
 
 typedef struct {
 	msg_header_t hdr;
-	int ID, arrivalVelX, arrivalVelY, arrivalVelZ;
-} comm_command;
+	int ID, arrivalPosX, arrivalPosY, arrivalPosZ, arrivalVelX, arrivalVelY, arrivalVelZ;
+} plane_msg;
 
 
 #endif /* STRUCTURES_H_ */

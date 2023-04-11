@@ -9,7 +9,7 @@ using namespace std;
 
 
 // ----------------------------------- Class Methods -----------------------------------
-int Radar::toComputerSys(all_planes data){
+int Radar::toComputerSys(compsys_msg data){
 	if ((server_coid = name_open(COMPUTER_ATTACH_POINT, 0)) == -1) {
 		printf("Radar: Failed connection to server %d\n\n");
 		return EXIT_FAILURE;
@@ -22,16 +22,23 @@ int Radar::toComputerSys(all_planes data){
 	return EXIT_SUCCESS;
 }
 
+//void Radar::removePlaneFromAirspace(int planeID) {
+//    airspace.erase(std::remove(airspace.begin(), airspace.end(), planeID), airspace.end());
+//}
+//
+//void Radar::addPlaneToAirspace(int planeID) {
+//    airspace.push_back(planeID);
+//}
+
 
 void Radar::pingAirspace(){
 	cTimer timer(1,0, 1, 0); //creating a timer of period 1 with an offset of 1. CHANGE IF WE WANT TO CHANGE THE AMOUNT OF TIME BETWEEN PINGS
 
-
-
 	msg pos_msg;
 	pos_msg.hdr.type = 0x00;
+
 	plane_info rmsg;
-	all_planes data;
+	compsys_msg data;
 	data.hdr.type = 0x01;
 	char attach_points[20];
 	name_attach_t *attach;
@@ -43,6 +50,9 @@ void Radar::pingAirspace(){
 		// get the populated airspace
 		airspace = Plane::airspace;
 
+
+
+		timer.wait_next_activation();
 
 		if (airspace.empty()){
 			printf("Radar: Airspace empty\n\n");

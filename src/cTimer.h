@@ -38,7 +38,6 @@ public:
 	virtual ~cTimer();
 	void set_timer(uint32_t,uint32_t,uint32_t,uint32_t); //adding timer functions from tutorial code
 	void wait_next_activation();
-	//int startTimer(int offset, int period); believe we can delete this as well
 };
 
 #endif /* CTIMER_H_ */
